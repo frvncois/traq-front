@@ -1,8 +1,9 @@
 // src/services/api.js
 import axios from 'axios'
 
+// Use environment variable for flexibility (recommended)
 const apiClient = axios.create({
-  baseURL: 'http://localhost:1337',
+  baseURL: import.meta.env.VITE_API_URL || 'https://fantastic-fruit-078b7f5b01.strapiapp.com',
   headers: { 'Content-Type': 'application/json' }
 })
 
