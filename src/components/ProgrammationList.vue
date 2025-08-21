@@ -29,7 +29,7 @@ const formatDate = (dateString) => {
         <div class="event is-cover">
           <img
             v-if="event.eventCover?.url"
-            :src="`http://localhost:1337${event.eventCover.url}`"
+            :src="`${event.eventCover.url}`"
             :alt="event.eventTitle"
           />
         </div>

@@ -10,7 +10,7 @@ const props = defineProps({
 <template>
   <div class="hero is-wrap" v-if="event">
     <img
-      :src="`http://localhost:1337${event.eventCover?.url}`"
+      :src="`${event.eventCover?.url}`"
       :alt="event.eventTitle"
     />
   </div>

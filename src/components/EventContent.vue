@@ -32,8 +32,8 @@ const formatDate = (dateString) =>
 
         <div>
           <h2>{{ event.eventSubtitle }}</h2>
-          {{ event.eventPartners }}
-          {{ event.eventArtists }}
+              {{ event.eventPartners }}
+              {{ event.eventArtists }}
         </div>
 
         <div class="content" v-html="event.eventContent">

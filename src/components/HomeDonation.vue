@@ -15,7 +15,7 @@ const props = defineProps({
         <p>{{ home.donationIntro }}</p>
       </div>
       <div class="donation is-cover" v-if="home.donationCover?.url">
-        <img :src="`http://localhost:1337${home.donationCover.url}`">
+        <img :src="`${home.donationCover.url}`">
       </div>
     </div>
   </section>

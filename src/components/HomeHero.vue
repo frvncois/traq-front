@@ -53,7 +53,6 @@ onMounted(() => {
 <template>
   <section v-if="home" class="hero">
     <div class="hero is-wrap">
-      <!-- Hero content block -->
       <div
         class="hero is-content"
         :style="{ height: contentHeight, transition: 'height 0.75s ease' }"
@@ -61,7 +60,7 @@ onMounted(() => {
         <div class="hero is-logo">
           <LogoMain />
         </div>
-        <img :src="`http://localhost:1337${home.heroCover?.url}`" />
+        <img :src="`${home.heroCover?.url}`" />
 
         <h1
           :style="{

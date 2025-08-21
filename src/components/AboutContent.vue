@@ -11,18 +11,15 @@ const props = defineProps({
   <section class="is-white" v-if="about">
     <div class="about is-wrap">
 
-      <!-- Intro -->
       <div class="about is-content">
         <p>{{ about.aboutIntro }}</p>
       </div>
 
       <div class="about is-content">
-        <!-- Left item: could be an image -->
         <div class="about is-item">
           image
         </div>
 
-        <!-- Right item: rich text + lists -->
         <div class="about is-item">
           <div v-html="about.aboutContent"></div>
 

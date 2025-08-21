@@ -48,7 +48,7 @@ const formatTime = (dateString) => {
       <div class="event is-next">
         <div class="event is-cover">
           <img
-            :src="`http://localhost:1337${nextEvent.eventCover?.url}`"
+            :src="`${nextEvent.eventCover?.url}`"
             :alt="nextEvent.eventTitle"
           />
         </div>

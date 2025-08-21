@@ -37,7 +37,7 @@ const formatDate = (dateString) => {
           class="is-item">
           <div class="is-cover">
             <img
-              :src="`http://localhost:1337${event.eventCover?.url}`"
+              :src="`${event.eventCover?.url}`"
               :alt="event.eventTitle"
             />
           </div>
