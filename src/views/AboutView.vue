@@ -2,8 +2,8 @@
 import { onMounted } from 'vue'
 import { useContentStore } from '@/stores/content'
 
-import AboutContent from '@/components/AboutContent.vue'
-import AboutHero from '@/components/AboutHero.vue'
+import AboutContent from '@/components/about/AboutContent.vue'
+import AboutHero from '@/components/about/AboutHero.vue'
 
 const store = useContentStore()
 

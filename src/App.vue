@@ -1,8 +1,8 @@
 <script setup>
 import { RouterView } from 'vue-router'
 
-import GlobalFooter from './components/GlobalFooter.vue'
-import GlobalHeader from './components/GlobalHeader.vue'
+import GlobalFooter from './components/global/GlobalFooter.vue'
+import GlobalHeader from './components/global/GlobalHeader.vue'
 </script>
 
 <template>

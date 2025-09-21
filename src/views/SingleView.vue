@@ -3,9 +3,9 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useContentStore } from '@/stores/content'
 
-import EventContent from '@/components/EventContent.vue'
-import EventCover from '@/components/EventCover.vue'
-import EventGrid from '@/components/EventGrid.vue'
+import SingleContent from '@/components/single/SingleContent.vue'
+import SingleHero from '@/components/single/SingleHero.vue'
+import SingleEvents from '@/components/single/SingleEvents.vue'
 
 const route = useRoute()
 const { documentId } = route.params
@@ -24,8 +24,8 @@ onMounted(async () => {
 
 <template>
   <section v-if="event" class="is-orange">
-    <EventCover :event="event" />
-    <EventContent :event="event" />
+    <SingleHero :event="event" />
+    <SingleContent :event="event" />
   </section>
-    <EventGrid :events="store.events.filter(e => e.documentId !== documentId)" />
+    <SingleEvents :events="store.events.filter(e => e.documentId !== documentId)" />
 </template>

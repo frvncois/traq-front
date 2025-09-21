@@ -14,3 +14,22 @@ const emit = defineEmits(['close'])
     </div>
   </nav>
 </template>
+
+<style scoped>
+nav {
+  position: fixed;
+  inset: 0;
+  background-color: var(--is-fushia);
+  z-index: 9;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-height);
+  > .is-items {
+    display: flex;
+    flex-direction: column;
+    font-size: 10.5vw;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+}
+</style>

@@ -2,11 +2,11 @@
 import { onMounted } from 'vue'
 import { useContentStore } from '@/stores/content'
 
-import EventGrid from '@/components/EventGrid.vue'
-import EventNext from '@/components/EventNext.vue'
-import HomeDonation from '@/components/HomeDonation.vue'
-import HomeHero from '@/components/HomeHero.vue'
-import HomeNewsletter from '@/components/HomeNewsletter.vue'
+import HomeHero from '@/components/home/HomeHero.vue'
+import HomeUpcoming from '@/components/home/HomeUpcoming.vue'
+import HomeEvents from '@/components/home/HomeEvents.vue'
+import HomeDonation from '@/components/home/HomeDonation.vue'
+import HomeNewsletter from '@/components/home/HomeNewsletter.vue'
 
 const store = useContentStore()
 
@@ -19,8 +19,8 @@ onMounted(() => {
 <template>
   <main>
     <HomeHero :home="store.home" />
-    <EventNext :events="store.events" />
-    <EventGrid :events="store.events" />
+    <HomeUpcoming :events="store.events" />
+    <HomeEvents :events="store.events" />
     <HomeDonation :home="store.home" />
     <HomeNewsletter :home="store.home" />
   </main>
