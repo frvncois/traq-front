@@ -28,6 +28,16 @@
   src: url(accent.otf);
 }
 
+*::selection {
+  color: var(--is-white);
+  background-color: var(--is-orange);
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
   margin: 0;
   font-family: 'Body';

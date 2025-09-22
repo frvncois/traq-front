@@ -17,7 +17,7 @@ lenis.on('scroll', (e) => {
 // Reset scroll to top on route change
 router.beforeEach((to, from, next) => {
   // Reset Lenis scroll to top
-  lenis.scrollTo(0, { immediate: true })
+  lenis.scrollTo(0, { immediate: false })
   next()
 })
 
