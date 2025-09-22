@@ -66,8 +66,15 @@ footer {
         > .is-item {
         display: flex;
         flex-direction: column;
+        align-items: flex-start;
+            > a {
+                border-bottom: 3px solid var(--is-orange);
+                &:hover {
+                    border-color: var(--is-black);
+                }
+                }
+            }
         }
-    }
     > .is-logo {
       display: flex;
       align-items: flex-end;

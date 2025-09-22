@@ -34,7 +34,7 @@ import LogoMain from '@/assets/LogoMain.vue';
     }
     > .is-logo {
       position: absolute;
-      top: var(--space-small);
+      top: var(--space-base);
       left: var(--space-width);
     }
   }

@@ -38,7 +38,7 @@ const props = defineProps({
   &.is-logo {
     color: var(--is-orange);
     position: absolute;
-    top: var(--space-small);
+    top: var(--space-base);
     left: var(--space-width);
   }
   &.is-content {

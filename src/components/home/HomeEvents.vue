@@ -82,25 +82,24 @@ const props = defineProps({
     }
     > .is-cta {
       position: absolute;
-      top: -0.75em;
-      right: 1.25em;
+      top: 0;
+      right: var(--space-base);
       display: flex;
       flex-direction: column;
       align-items: center;
       cursor: pointer;
       overflow: hidden;
       height: 100%;
-      gap: var(--space-base);
       span {
-        text-transform: uppercase;
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
-        max-height: 0px;
-        overflow: hidden;
-        white-space: nowrap;
-        position: relative;
-        top: 0;
-        transition: max-height 0.75s ease-in-out;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      max-height: 0px;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      padding-bottom: 0;
+      transition: max-height 0.75s cubic-bezier(0.85, 0, 0.15, 1), padding-bottom 0.75s cubic-bezier(0.85, 0, 0.15, 1);
       }
       .is-toggle {
         clip-path: polygon(0 0, 100% 0%, 100% 70%, 0% 100%);
@@ -112,6 +111,7 @@ const props = defineProps({
       }
       &:hover span {
         max-height: 500px;
+        padding-bottom: var(--space-small);
       }
     }
   }

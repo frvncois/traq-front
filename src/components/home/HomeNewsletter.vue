@@ -4,7 +4,10 @@
             <div class="newsletter is-intro">
                 <h1>Diffuseur des arts de la scène</h1>
             </div>
-            <div class="newsletter is-content">
+        </div>
+    </section>
+    <section class="is-orange">
+      <div class="newsletter is-content">
                 <div class="newsletter is-elements">
                     <img src="@/assets/FooterN.svg"/>
                     <img src="@/assets/FooterA.svg"/>
@@ -13,7 +16,6 @@
                     <h2>Abonnez-vous à notre infolettre</h2>
                 </div>
             </div>
-        </div>
     </section>
 </template>
 
@@ -24,7 +26,7 @@
     display: flex;
     flex-direction: column;
     & h1 {
-      font-size: 9vw;
+      font-size: 9.8vw;
       line-height: 1;
       }
     }
@@ -41,7 +43,6 @@
   &.is-elements {
     flex: 1;
     > img {
-      width: 100%;
       position: sticky;
       top: var(--space-base);
     }

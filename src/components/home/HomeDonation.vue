@@ -14,8 +14,11 @@ const props = defineProps({
         <h1>Faire un don</h1>
         <p>{{ home.donationIntro }}</p>
       </div>
-      <div class="donation is-cover" v-if="home.donationCover?.url">
-        <img :src="`${home.donationCover.url}`">
+      <div 
+          class="donation is-cover" 
+          v-if="home.donationCover?.url"
+          :style="{ backgroundImage: `url(${home.donationCover.url})` }"
+        >
       </div>
     </div>
   </section>
@@ -39,6 +42,8 @@ const props = defineProps({
       position: relative;
       height: 75vh;
       overflow: hidden;
+      background-attachment: fixed;
+      background-size: cover;
       > img {
         position: absolute;
         inset: 0;

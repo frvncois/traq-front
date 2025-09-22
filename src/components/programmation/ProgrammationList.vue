@@ -13,11 +13,12 @@ const props = defineProps({
 
 <template>
   <div class="events is-grid">
-    <div
+    <RouterLink
       v-for="event in events"
       :key="event.documentId"
-      class="events is-item"
-    >
+      :to="`/events/${event.documentId}`"
+      class="is-item">
+
         <div class="events is-cover">
           <img
             v-if="event.eventCover?.url"
@@ -32,8 +33,8 @@ const props = defineProps({
           <h1>{{ event.eventTitle }}</h1>
           <h2>{{ formatDate(event.eventDate) }}</h2>
         </div>
-    </div>
-  </div>
+  </RouterLink>
+</div>
 </template>
 
 <style scoped>

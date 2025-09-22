@@ -11,7 +11,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <section class="is-orange">
+  <section>
     <div class="hero is-wrap">
       <div class="hero is-logo">
         <RouterLink to="/"><LogoMain /></RouterLink>
@@ -51,7 +51,7 @@ const props = defineProps({
   > .is-logo {
     position: absolute;
     z-index: 1;
-    top: var(--space-small);
+    top: var(--space-base);
     left: var(--space-width);
     color: var(--is-orange);
   }

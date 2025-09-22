@@ -71,7 +71,7 @@ import LogoMain from '@/assets/LogoMain.vue';
     > .is-logo {
         color: var(--is-black);
         position: absolute;
-        top: var(--space-small);
+        top: var(--space-base);
         left: var(--space-width);
      }
   }
