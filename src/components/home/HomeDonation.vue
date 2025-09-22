@@ -62,8 +62,8 @@ onUnmounted(() => {
     > .is-content {
       display: flex;
       flex-direction: column;
-      gap: var(--space-width);
-      padding: var(--space-width);
+      gap: var(--space-large);
+      padding: var(--space-small) var(--space-width);
       > h1 {
         text-transform: uppercase;
         font-size: var(--font-big);

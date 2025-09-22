@@ -82,7 +82,7 @@ const props = defineProps({
     background: var(--is-white);
     height: 20vh;
     > p {
-      padding: var(--space-base) var(--space-width);
+      padding: var(--space-small) var(--space-width);
     }
   }
 }
