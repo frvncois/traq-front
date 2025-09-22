@@ -24,7 +24,6 @@ const toggleNav = () => {
 
 const closeNav = () => {
   showNav.value = false
-  // Update header color based on current section after nav closes
   updateHeaderColor()
 }
 
@@ -52,7 +51,6 @@ const updateHeaderColor = () => {
     } else if (currentSection.classList.contains('is-white')) {
       headerColor.value = 'var(--is-orange)'
     } else {
-      // No class - default
       headerColor.value = 'var(--is-orange)'
     }
   }

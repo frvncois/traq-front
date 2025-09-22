@@ -69,10 +69,6 @@ const props = defineProps({
           font-size: var(--font-md);
         }
       }
-      > .is-content {
-        display: flex;
-        flex-direction: column;
-      }
       > .is-header {
         display: flex;
         gap: var(--space-small);
@@ -80,6 +76,9 @@ const props = defineProps({
         > h3 {
           font-size: var(--font-rg);
         }
+      }
+      &:hover > .is-details {
+        color: var(--is-orange);
       }
     }
   }

@@ -71,7 +71,7 @@ footer {
                 border-bottom: 3px solid var(--is-orange);
                 &:hover {
                     border-color: var(--is-black);
-                }
+                    }
                 }
             }
         }

@@ -85,7 +85,10 @@ column-count: 2;
   &:last-child {
     display: flex;
     flex-direction: column;
-    gap: var(--space-base);
   }
+}
+
+li:empty { 
+  padding: var(--space-small);
 }
 </style>

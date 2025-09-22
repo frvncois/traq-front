@@ -53,8 +53,16 @@ import LogoMain from '@/assets/LogoMain.vue';
         > .is-items {
             display: flex;
             flex-direction: column;
+            align-items: flex-start;
             justify-content: flex-end;
-        }
+            > a {
+                border-bottom: 3px solid var(--is-fushia);
+                    &:hover {
+                        border-color: var(--is-black);
+                    }
+                }
+            }
+        
         > .is-cover {
             background-color: var(--is-orange);
             flex: 1;
@@ -65,7 +73,7 @@ import LogoMain from '@/assets/LogoMain.vue';
             flex: 1;
         }
         &:last-child {
-            flex: 0.5;
+            flex: 0.75;
         }
     }
     > .is-logo {
@@ -73,7 +81,8 @@ import LogoMain from '@/assets/LogoMain.vue';
         position: absolute;
         top: var(--space-base);
         left: var(--space-width);
-     }
+    }
+    
   }
 }
 </style>

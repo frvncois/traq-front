@@ -14,7 +14,13 @@ const lenis = new Lenis({
 lenis.on('scroll', (e) => {
 });
 
+// Reset scroll to top on route change
+router.beforeEach((to, from, next) => {
+  // Reset Lenis scroll to top
+  lenis.scrollTo(0, { immediate: true })
+  next()
+})
+
 app.use(createPinia())
 app.use(router)
-
 app.mount('#app')

@@ -7,7 +7,6 @@ const isAnimated = ref(false)
 const isClosing = ref(false)
 
 onMounted(() => {
-  // Trigger animation on next tick to ensure element is mounted
   setTimeout(() => {
     isAnimated.value = true
   }, 10)
@@ -17,13 +16,11 @@ const handleClose = () => {
   isClosing.value = true
   isAnimated.value = false
   
-  // Wait for animation to complete before emitting close
   setTimeout(() => {
     emit('close')
-  }, 1000) // 1s to match the transition duration
+  }, 1250) // 1s to match the transition duration
 }
 
-// Expose handleClose for parent component
 defineExpose({
   handleClose
 })

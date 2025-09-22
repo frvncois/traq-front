@@ -73,6 +73,9 @@ const props = defineProps({
           font-size: var(--font-md);
         }
       }
+      &:hover .is-content {
+        color: var(--is-orange);
+      }
     }
   }
 }

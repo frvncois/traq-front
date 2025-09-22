@@ -25,7 +25,7 @@ const nextEvent = computed(() => {
   <section class="is-white" v-if="nextEvent">
     <div class="event is-wrap">
       <h1>Prochain Événement</h1>
-          <RouterLink to="/events" class="events is-cta">
+          <RouterLink to="/programmation" class="events is-cta">
             <span>Découvrir</span>
             <div class="is-toggle"></div>
           </RouterLink>
@@ -89,6 +89,9 @@ const nextEvent = computed(() => {
           text-transform: uppercase;
           line-height: 0.9;
         }
+      }
+      &:hover .is-content {
+        color: var(--is-orange);
       }
     }
     > .is-cta {

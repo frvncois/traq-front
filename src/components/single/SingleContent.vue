@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue'
 import { formatDate, formatTime } from '@/services/time'
 
 const props = defineProps({
@@ -6,6 +7,19 @@ const props = defineProps({
     type: Object,
     default: () => null
   }
+})
+
+const parsedLinks = computed(() => {
+  if (!props.event.eventLinks) return ''
+  
+  return props.event.eventLinks
+    // Convert [text](url) to <a href="url">text</a>
+    .replace(
+      /\[([^\]]+)\]\(([^)]+)\)/g, 
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+    )
+    // Convert line breaks to <br>
+    .replace(/\n/g, '<br>')
 })
 
 </script>
@@ -46,7 +60,7 @@ const props = defineProps({
             </li>
             <li>
               <h3>Liens</h3>
-              {{ event.eventLinks }}
+              <div v-html="parsedLinks"></div>
             </li>
           </ul>
         </div>

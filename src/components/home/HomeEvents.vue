@@ -15,7 +15,7 @@ const props = defineProps({
     <div class="events is-wrap">
       <h1>Programmation</h1>
 
-          <RouterLink to="/events" class="events is-cta">
+          <RouterLink to="/programmation" class="events is-cta">
             <span>Découvrir</span>
             <div class="is-toggle"></div>
           </RouterLink>
@@ -77,6 +77,9 @@ const props = defineProps({
           > h1, h2 {
             font-size: var(--font-md);
           }
+        }
+        &:hover .is-content {
+          color: var(--is-orange);
         }
       }
     }
