@@ -33,7 +33,11 @@ const props = defineProps({
             </li>
           </ul>
           <h2>Mission</h2>
-          <p v-html="about.aboutMission"></p>
+          <ul v-if="about.aboutMission">
+            <li v-for="(artist, i) in about.aboutMission.split('\n')" :key="i">
+              {{ artist }}
+            </li>
+          </ul>
           <h2>Conseil</h2>
           <ul v-if="about.aboutConseil">
             <li v-for="(line, i) in about.aboutConseil.split('\n')" :key="i">
@@ -66,8 +70,8 @@ const props = defineProps({
   }
   > .is-cover {
     background-color: var(--is-fushia);
-    clip-path: polygon(0 0, 100% 0%, 100% 50%, 0% 100%);
-    height: 40em;
+    clip-path: var(--mask);
+    height: calc(100vh - var(--space-height));
     overflow: hidden;
     position: sticky;
     top: var(--space-base);
@@ -78,6 +82,15 @@ const props = defineProps({
       width: 100%;
     }
   }
+  > p, li {
+    font-family: 'Accent';
+  }
+  > h2 {
+    font-family: 'Body';
+    font-size: var(--font-big);
+    text-transform: none;
+    margin-top: var(--space-small);
+  }
 }
 
 ul {
@@ -85,6 +98,12 @@ column-count: 2;
   &:last-child {
     display: flex;
     flex-direction: column;
+    margin-bottom: var(--space-width);
+  }
+  &:nth-child(6) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-base);
   }
 }
 

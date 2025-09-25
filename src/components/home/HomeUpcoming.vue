@@ -88,6 +88,7 @@ const nextEvent = computed(() => {
           font-size: var(--font-big);
           text-transform: uppercase;
           line-height: 0.9;
+          font-family: 'Accent';
         }
       }
       &:hover .is-content {
@@ -97,7 +98,7 @@ const nextEvent = computed(() => {
     > .is-cta {
       position: absolute;
       top: 0;
-      right: var(--space-base);
+      right: calc(var(--space-base) * 2);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -106,6 +107,7 @@ const nextEvent = computed(() => {
       height: 100%;
       span {
       text-transform: uppercase;
+      font-family: 'Accent';
       writing-mode: vertical-rl;
       text-orientation: mixed;
       max-height: 0px;
@@ -116,18 +118,18 @@ const nextEvent = computed(() => {
       transition: max-height 0.75s cubic-bezier(0.85, 0, 0.15, 1), padding-bottom 0.75s cubic-bezier(0.85, 0, 0.15, 1);
       }
       .is-toggle {
-        clip-path: polygon(0 0, 100% 0%, 100% 70%, 0% 100%);
+        clip-path: var(--mask);
         background-color: var(--is-black);
         width: 2em;
-        height: 3em;
+        height: 3.5em;
         position: relative;
         bottom: 0;
-      }
-      &:hover span {
-        max-height: 500px;
-        padding-bottom: var(--space-small);
+        }
       }
     }
+    &:hover .is-cta span {
+    max-height: 500px;
+    padding-bottom: var(--space-small);
   }
 }
 </style>

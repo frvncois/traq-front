@@ -10,7 +10,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)), // ✅ this maps @ to /src
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   server: {

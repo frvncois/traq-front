@@ -51,7 +51,7 @@ const props = defineProps({
     align-items: flex-end;
     justify-content: space-between;
     height: 80vh;
-    padding: var(--space-height) var(--space-width) var(--space-base) var(--space-width);
+    padding: var(--space-height) var(--space-width) var(--space-small) var(--space-width);
     box-sizing: border-box;
     > img {
       position: absolute;
@@ -72,7 +72,7 @@ const props = defineProps({
       word-spacing: 100vw;
       line-height: 0.8;
       font-size: var(--font-big);
-      font-family: 'Accent';
+      font-family: 'Body';
       text-transform: none;
     }
   }
@@ -83,7 +83,14 @@ const props = defineProps({
     height: 20vh;
     > p {
       padding: var(--space-small) var(--space-width);
+      font-family: 'Accent';
     }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  h2 {
+    display: none;
   }
 }
 </style>

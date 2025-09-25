@@ -50,12 +50,13 @@ nav {
   z-index: 9;
   display: flex;
   align-items: flex-end;
-  padding: var(--space-height);
+  padding: var(--space-height) var(--space-width);
+  font-family: 'Accent';
   
   > .is-items {
     display: flex;
     flex-direction: column;
-    font-size: 10.5vw;
+    font-size: 9.5vw;
     text-transform: uppercase;
     line-height: 1;
   }

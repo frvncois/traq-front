@@ -1,11 +1,11 @@
 :root {
-  --is-black: #060606;
-  --is-orange: #F04932;
-  --is-fushia: #AC2B56;
+  --is-black: #000000;
+  --is-orange: #F04531;
+  --is-fushia: #AC2150;
   --is-white: #FCF7F0;
 
   --space-large: 6em;
-  --space-width: 4em;
+  --space-width: 6em;
   --space-height: 1.5em;
   --space-base: 1em;
   --space-small: 0.5em;
@@ -15,17 +15,17 @@
   --font-md: 1.75em;
   --font-rg: 1em;
 
-  --mask: polygon(0 0, 100% 0%, 100% 50%, 0% 100%);
+  --mask: polygon(0 0, 100% 0%, 100% 55%, 0% 100%);
 }
 
 @font-face {
   font-family: 'Body';
-  src: url(body.otf);
+  src: url(body.ttf);
 }
 
 @font-face {
   font-family: 'Accent';
-  src: url(accent.otf);
+  src: url(accent.woff);
 }
 
 *::selection {
@@ -49,10 +49,11 @@ h1, h2, h3 {
   line-height: 0.9;
   margin-block: 0;
   text-transform: uppercase;
+  font-family: 'Accent';
 }
 
 p {
-  font-weight: normal;
+  font-weight: 500;
   line-height: 1;
   margin-block: 0;
   white-space: pre-line;

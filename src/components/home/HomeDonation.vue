@@ -1,33 +1,8 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
 const props = defineProps({
   home: {
     type: Object,
     default: () => null
-  }
-})
-const sectionRef = ref(null)
-const isVisible = ref(false)
-let observer = null
-onMounted(() => {
-  if (sectionRef.value) {
-    observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          isVisible.value = entry.intersectionRatio > 0.1
-        })
-      },
-      {
-        threshold: [0, 0.25, 0.5, 0.75, 0.8, 1],
-        rootMargin: '0px'
-      }
-    )
-    observer.observe(sectionRef.value)
-  }
-})
-onUnmounted(() => {
-  if (observer) {
-    observer.disconnect()
   }
 })
 </script>
@@ -43,7 +18,7 @@ onUnmounted(() => {
         <p>{{ home.donationIntro }}</p>
       </div>
       <RouterLink to="/events" class="events is-cta">
-        <span :class="{ 'is-visible': isVisible }">Appuyez-nous</span>
+        <span>Appuyez-nous</span>
         <div class="is-toggle"></div>
       </RouterLink>
       <div
@@ -68,11 +43,14 @@ onUnmounted(() => {
         text-transform: uppercase;
         font-size: var(--font-big);
       }
+      > p {
+        font-family: 'Accent';
+      }
     }
     > .is-cta {
       position: absolute;
       top: 0;
-      right: var(--space-base);
+      right: calc(var(--space-base) * 2);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -83,6 +61,7 @@ onUnmounted(() => {
         text-transform: uppercase;
         writing-mode: vertical-rl;
         text-orientation: mixed;
+        font-family: 'Accent';
         max-height: 0px;
         overflow: hidden;
         white-space: nowrap;
@@ -95,10 +74,10 @@ onUnmounted(() => {
         }
       }
       .is-toggle {
-        clip-path: polygon(0 0, 100% 0%, 100% 70%, 0% 100%);
+        clip-path: var(--mask);
         background-color: var(--is-black);
         width: 2em;
-        height: 3em;
+        height: 3.5em;
         position: relative;
         bottom: 0;
       }
@@ -118,6 +97,10 @@ onUnmounted(() => {
         inset: 0;
       }
     }
+  }
+      &:hover .is-cta span {
+    max-height: 500px;
+    padding-bottom: var(--space-small);
   }
 }
 </style>

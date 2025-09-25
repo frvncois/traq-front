@@ -1,35 +1,68 @@
 <script setup>
-import { computed } from 'vue'
-import { formatDate, formatTime } from '@/services/time'
+import { onMounted, onBeforeUnmount } from "vue"
+import { gsap } from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { computed } from "vue"
+import { formatDate, formatTime } from "@/services/time"
 
 const props = defineProps({
   event: {
     type: Object,
-    default: () => null
-  }
+    default: () => null,
+  },
 })
 
 const parsedLinks = computed(() => {
-  if (!props.event.eventLinks) return ''
-  
+  if (!props.event?.eventLinks) return ""
   return props.event.eventLinks
-    // Convert [text](url) to <a href="url">text</a>
-    .replace(
-      /\[([^\]]+)\]\(([^)]+)\)/g, 
-      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
-    )
-    // Convert line breaks to <br>
-    .replace(/\n/g, '<br>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+    .replace(/\n/g, "<br>")
 })
 
+
+gsap.registerPlugin(ScrollTrigger)
+
+onMounted(() => {
+  const section = document.querySelector("section.is-orange")
+  if (!section) return
+
+  const stickyEl = section.querySelector(".event.is-sticky")
+  if (stickyEl) stickyEl.style.zIndex = "2"
+  const subtitleEl = section.querySelector(".event.is-subtitle")
+  const ticketEl = section.querySelector(".event.is-ticket")
+  const genreEl = section.querySelector(".event.is-cta")
+
+  ;[stickyEl, subtitleEl, genreEl, ticketEl].forEach((el) => {
+    if (!el) return
+    ScrollTrigger.create({
+      trigger: el,                  // each element controls its own pinning
+      start: "top top",             // when element top hits viewport top
+      endTrigger: section,          // release when section is done
+      end: "bottom top",            // when section bottom hits viewport top
+      pin: true,
+      pinSpacing: false,
+      markers: false,
+    })
+  })
+})
+
+
+onBeforeUnmount(() => {
+  ScrollTrigger.getAll().forEach((st) => st.kill())
+})
 </script>
+
 
 <template>
   <section class="is-orange" v-if="event">
     <div class="event is-wrap">
+        <div class="event is-cta">
+            <span>{{ event.eventGenre }}</span>
+            <div class="is-toggle"></div>
+        </div>
       <div class="event is-content">
         <div class="event is-items">
-          <div>
+          <div class="event is-sticky">
             <h1>{{ event.eventTitle }}</h1>
             <h2>{{ formatDate(event.eventDate) }}</h2>
             <h2>{{ formatTime(event.eventDate) }}</h2>
@@ -42,7 +75,7 @@ const parsedLinks = computed(() => {
           </div>
         </div>
         <div class="event is-items">
-          <h1>Billeterie</h1>
+          <h1 class="event is-ticket">Billeterie</h1>
           <div class="event is-cover"></div>
         </div>
       </div>
@@ -74,6 +107,9 @@ const parsedLinks = computed(() => {
 
 
 <style scoped>
+section {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
 .event {
   &.is-wrap {
     position: relative;
@@ -85,7 +121,7 @@ const parsedLinks = computed(() => {
     display: grid;
     grid-template-columns: 1fr 0.75fr;
     gap: var(--space-width);
-    padding: var(--space-small) 0;
+
     > .is-items {
       display: flex;
       flex-direction: column;
@@ -93,11 +129,11 @@ const parsedLinks = computed(() => {
       & h1, h2 {
         font-size: var(--font-big);
       }
-      > .is-subtitle {
+      & .is-subtitle {
         font-size: var(--font-lg);
         text-transform: unset;
-        font-family: 'accent';
-        max-width: 15ch;
+        font-family: 'body';
+        max-width: 18ch;
       }
       > .is-cover {
         background-color: var(--is-fushia);
@@ -111,13 +147,59 @@ const parsedLinks = computed(() => {
         gap: var(--space-base);
         margin-left: 50%;
       }
+      & .is-sticky {
+        background-color: var(--is-orange);
+        position: relative;
+        z-index: 2;
+        > h1 {
+          padding-top: 0.75rem;
+        }
+      }
+      & h1 {
+        background-color: var(--is-orange);
+        z-index: 2;
+      }
+      & { 
+        font-family: 'Accent';
+      }
     }
     &:last-child .is-items {  
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
-  }
+    }
+    & .is-cta {
+      position: absolute;
+      right: calc(var(--space-base) * 2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      overflow: hidden;
+      height: 100%;
+      span {
+      padding-top: var(--space-small);
+      font-family: 'Accent';
+      text-transform: uppercase;
+      font-size: var(--font-md);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      padding-bottom: 0;
+      }
+      .is-toggle {
+        clip-path: var(--mask);
+        background-color: var(--is-black);
+        width: 2em;
+        height: 3.5em;
+        position: relative;
+        bottom: 0;
+        margin-top: var(--space-base);
+        }
+    }
   }
 }
 </style>

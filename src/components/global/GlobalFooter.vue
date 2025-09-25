@@ -38,7 +38,9 @@ import LogoMain from '@/assets/LogoMain.vue';
                 </div>
             </div>
             <div class="is-logo">
-                <LogoMain />
+                <RouterLink to="/">
+                    <LogoMain />
+                </RouterLink>
             </div>
         </div>
     </footer>
@@ -67,6 +69,7 @@ footer {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        font-family: 'Accent';
             > a {
                 border-bottom: 3px solid var(--is-orange);
                 &:hover {

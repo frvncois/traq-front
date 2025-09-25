@@ -68,13 +68,15 @@ onUnmounted(() => {
 
 <template>
   <header :style="{ color: computedHeaderColor }">
-    <div @click="toggleNav" :class="{ 'is-active': showNav }">
+    <div @click="toggleNav">
       <span>Menu</span>
-      <div class="is-toggle"></div>
+      <!-- Apply is-active directly to .is-toggle -->
+      <div class="is-toggle" :class="{ 'is-active': showNav }"></div>
     </div>
   </header>
   <GlobalNavigation v-if="showNav" ref="globalNavRef" @close="closeNav" />
 </template>
+
 
 <style scoped>
 header {
@@ -82,6 +84,7 @@ header {
   position: fixed;
   top: var(--space-base);
   left: var(--space-base);
+  padding: 0 var(--space-base);
   z-index: 10;
   transition: color 0.75s cubic-bezier(0.85, 0, 0.15, 1);
   
@@ -104,7 +107,7 @@ header {
       text-transform: uppercase;
       writing-mode: vertical-rl;
       text-orientation: mixed;
-      max-height: 0px;
+      font-family: 'Accent';
       overflow: hidden;
       white-space: nowrap;
       position: relative;
@@ -113,23 +116,23 @@ header {
     }
     
     .is-toggle {
-      clip-path: polygon(0 0, 100% 0%, 100% 70%, 0% 100%);
+      clip-path: var(--mask);
       background-color: currentColor;
-      width: 2em;
+      width: 1.75em;
       height: 3em;
       position: relative;
       bottom: 0;
+      margin-top: 0;
+      opacity: 0;
+      transition: margin-top 0.75s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.75s cubic-bezier(0.85, 0, 0.15, 1);
+      &.is-active {
+        margin-top: var(--space-base);
+        opacity: 1;
+      }
     }
-    
-    &:hover span {
-      max-height: 500px;
-      padding-bottom: var(--space-small);
-      transition: max-height 0.75s cubic-bezier(0.85, 0, 0.15, 1), padding-bottom 0.75s cubic-bezier(0.85, 0, 0.15, 1);
-    }
-    
-    &.is-active span {
-      max-height: 500px;
-      padding-bottom: var(--space-small);
+    &:hover .is-toggle {
+      margin-top: var(--space-base);
+      opacity: 1;
     }
   }
 }
