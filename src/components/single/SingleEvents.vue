@@ -39,7 +39,6 @@ const props = defineProps({
 
 <style scoped>
 section {
-  margin-top: calc(-100vh - var(--space-xl));
 }
 .events {
   &.is-wrap {

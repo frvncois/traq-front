@@ -35,24 +35,25 @@ onMounted(() => {
       console.log('Applied min-height to details:', finalHeight + 'px')
     }
 
+    console.log('Checking elements:', {
+      stickyElement: stickyElement.value,
+      subtitleElement: subtitleElement.value
+    })
+
     if (stickyElement.value && subtitleElement.value) {
       const stickyHeight = stickyElement.value.offsetHeight
       const stickyMarginTop = parseInt(getComputedStyle(stickyElement.value).marginTop)
-      subtitleElement.value.style.top = `${stickyHeight + stickyMarginTop}px`
+      const topValue = stickyHeight + stickyMarginTop
+      subtitleElement.value.style.top = `${topValue}px`
+      console.log('SUBTITLE POSITIONING APPLIED - Sticky height:', stickyHeight, 'Margin:', stickyMarginTop, 'Final top:', topValue + 'px')
+    } else {
+      console.log('ELEMENTS NOT FOUND!', {
+        sticky: !!stickyElement.value,
+        subtitle: !!subtitleElement.value
+      })
     }
 
-    if (wrapElement.value) {
-      const originalHeight = wrapElement.value.style.height
-      wrapElement.value.style.height = ''
-
-      setTimeout(() => {
-        const contentHeight = wrapElement.value.scrollHeight
-        wrapElement.value.style.height = `${contentHeight + window.innerHeight}px`
-        console.log('Wrap content height:', contentHeight)
-        console.log('Applied wrap height:', contentHeight + window.innerHeight / 2 + 'px')
-      }, 50)
-    }
-  }, 100)
+  }, 500)
 
   let resizeTimeout
   const handleResize = () => {
@@ -66,6 +67,13 @@ onMounted(() => {
         const finalHeight = Math.max(aboutHeight - subtitleHeight, 0)
         detailsElement.value.style.minHeight = `${finalHeight}px`
         console.log('Resize recalc - About:', aboutHeight, 'Subtitle:', subtitleHeight, 'Final:', finalHeight)
+      }
+
+      // Re-calculate subtitle position on resize
+      if (stickyElement.value && subtitleElement.value) {
+        const stickyHeight = stickyElement.value.offsetHeight
+        const stickyMarginTop = parseInt(getComputedStyle(stickyElement.value).marginTop)
+        subtitleElement.value.style.top = `${stickyHeight + stickyMarginTop}px`
       }
     }, 500)
   }
@@ -143,6 +151,7 @@ section {
     position: relative;
     padding: 0 var(--space-width) 0 var(--space-width);
     display: flex;
+    margin-bottom: 10em;
     flex-direction: row;
     gap: var(--space-base);
     align-items: stretch;
