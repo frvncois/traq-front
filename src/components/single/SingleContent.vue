@@ -1,8 +1,5 @@
 <script setup>
-import { onMounted, onBeforeUnmount } from "vue"
-import { gsap } from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { computed } from "vue"
+import { computed, onMounted, ref } from "vue"
 import { formatDate, formatTime } from "@/services/time"
 
 const props = defineProps({
@@ -12,6 +9,12 @@ const props = defineProps({
   },
 })
 
+const stickyElement = ref(null)
+const subtitleElement = ref(null)
+const wrapElement = ref(null)
+const aboutElement = ref(null)
+const detailsElement = ref(null)
+
 const parsedLinks = computed(() => {
   if (!props.event?.eventLinks) return ""
   return props.event.eventLinks
@@ -19,88 +22,113 @@ const parsedLinks = computed(() => {
     .replace(/\n/g, "<br>")
 })
 
-
-gsap.registerPlugin(ScrollTrigger)
-
 onMounted(() => {
-  const section = document.querySelector("section.is-orange")
-  if (!section) return
+  setTimeout(() => {
+    if (aboutElement.value && detailsElement.value && subtitleElement.value) {
+      const aboutHeight = aboutElement.value.offsetHeight
+      const subtitleHeight = subtitleElement.value.offsetHeight
+      const finalHeight = aboutHeight - subtitleHeight
+      console.log('About height:', aboutHeight)
+      console.log('Subtitle height:', subtitleHeight)
+      console.log('Final height (about - subtitle):', finalHeight)
+      detailsElement.value.style.minHeight = `${finalHeight}px`
+      console.log('Applied min-height to details:', finalHeight + 'px')
+    }
 
-  const stickyEl = section.querySelector(".event.is-sticky")
-  if (stickyEl) stickyEl.style.zIndex = "2"
-  const subtitleEl = section.querySelector(".event.is-subtitle")
-  const ticketEl = section.querySelector(".event.is-ticket")
-  const genreEl = section.querySelector(".event.is-cta")
+    if (stickyElement.value && subtitleElement.value) {
+      const stickyHeight = stickyElement.value.offsetHeight
+      const stickyMarginTop = parseInt(getComputedStyle(stickyElement.value).marginTop)
+      subtitleElement.value.style.top = `${stickyHeight + stickyMarginTop}px`
+    }
 
-  ;[stickyEl, subtitleEl, genreEl, ticketEl].forEach((el) => {
-    if (!el) return
-    ScrollTrigger.create({
-      trigger: el,                  // each element controls its own pinning
-      start: "top top",             // when element top hits viewport top
-      endTrigger: section,          // release when section is done
-      end: "bottom top",            // when section bottom hits viewport top
-      pin: true,
-      pinSpacing: false,
-      markers: false,
-    })
-  })
-})
+    if (wrapElement.value) {
+      const originalHeight = wrapElement.value.style.height
+      wrapElement.value.style.height = ''
 
+      setTimeout(() => {
+        const contentHeight = wrapElement.value.scrollHeight
+        wrapElement.value.style.height = `${contentHeight + window.innerHeight}px`
+        console.log('Wrap content height:', contentHeight)
+        console.log('Applied wrap height:', contentHeight + window.innerHeight / 2 + 'px')
+      }, 50)
+    }
+  }, 100)
 
-onBeforeUnmount(() => {
-  ScrollTrigger.getAll().forEach((st) => st.kill())
+  let resizeTimeout
+  const handleResize = () => {
+    clearTimeout(resizeTimeout)
+    resizeTimeout = setTimeout(() => {
+      if (aboutElement.value) aboutElement.value.offsetHeight
+      if (subtitleElement.value) subtitleElement.value.offsetHeight
+      if (aboutElement.value && detailsElement.value && subtitleElement.value) {
+        const aboutHeight = aboutElement.value.offsetHeight
+        const subtitleHeight = subtitleElement.value.offsetHeight
+        const finalHeight = Math.max(aboutHeight - subtitleHeight, 0)
+        detailsElement.value.style.minHeight = `${finalHeight}px`
+        console.log('Resize recalc - About:', aboutHeight, 'Subtitle:', subtitleHeight, 'Final:', finalHeight)
+      }
+    }, 500)
+  }
+
+  window.addEventListener('resize', handleResize, { passive: true })
+
+  return () => {
+    clearTimeout(resizeTimeout)
+    window.removeEventListener('resize', handleResize)
+  }
 })
 </script>
 
 
 <template>
   <section class="is-orange" v-if="event">
-    <div class="event is-wrap">
-        <div class="event is-cta">
-            <span>{{ event.eventGenre }}</span>
-            <div class="is-toggle"></div>
-        </div>
+    <div ref="wrapElement" class="event is-wrap">
       <div class="event is-content">
-        <div class="event is-items">
-          <div class="event is-sticky">
+          <div ref="stickyElement" class="event is-sticky">
             <h1>{{ event.eventTitle }}</h1>
             <h2>{{ formatDate(event.eventDate) }}</h2>
             <h2>{{ formatTime(event.eventDate) }}</h2>
           </div>
-          <div>
+
+          <div class="event is-location">
             <p>LOCALISATION</p>
             <p>{{ event.eventVenue }}</p>
             <p>{{ event.eventStreet }}</p>
             <p>{{ event.eventCity }}</p>
           </div>
-        </div>
-        <div class="event is-items">
-          <h1 class="event is-ticket">Billeterie</h1>
-          <div class="event is-cover"></div>
-        </div>
+
+          <div class="event is-spacing">
+            <div ref="subtitleElement" class="event is-subtitle">
+              <h2>{{ event.eventSubtitle }}</h2>
+            </div>
+              <ul ref="detailsElement" class="event is-details">
+                <li>
+                  <h3>En partenaire avec</h3>
+                  {{ event.eventPartners }}
+                </li>
+                <li>
+                  <h3>Artistes</h3>
+                  {{ event.eventArtists }}
+                </li>
+                <li>
+                  <h3>Liens</h3>
+                  <div v-html="parsedLinks"></div>
+                </li>
+              </ul>
+          </div>
+
       </div>
       <div class="event is-content">
-        <div class="event is-items">
-          <h2 class="event is-subtitle">{{ event.eventSubtitle }}</h2>
-          <ul class="event is-details">
-            <li>
-              <h3>En partenaire avec</h3>
-              {{ event.eventPartners }}
-            </li>
-            <li>
-              <h3>Artistes</h3>
-              {{ event.eventArtists }}
-            </li>
-            <li>
-              <h3>Liens</h3>
-              <div v-html="parsedLinks"></div>
-            </li>
-          </ul>
-        </div>
-        <div class="event is-items">
-         <p v-html="event.eventContent"></p>
-        </div>
+        <div class="event is-ticket"><h1>Billeterie</h1></div>
+        <div class="event is-cover"></div>
+         <p ref="aboutElement" class="event is-about" v-html="event.eventContent"></p>
       </div>
+      <div>
+        <div class="event is-cta">
+          <span>{{ event.eventGenre }}</span>
+          <div class="is-toggle"></div>
+        </div>
+        </div>
     </div>
   </section>
 </template>
@@ -113,55 +141,79 @@ section {
 .event {
   &.is-wrap {
     position: relative;
-    padding: 0 var(--space-width) var(--space-width) var(--space-width);
+    padding: 0 var(--space-width) 0 var(--space-width);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: var(--space-base);
+    align-items: stretch;
     > .is-content {
-    display: grid;
-    grid-template-columns: 1fr 0.75fr;
-    gap: var(--space-width);
-
-    > .is-items {
       display: flex;
       flex-direction: column;
-      gap: var(--space-small);
-      & h1, h2 {
-        font-size: var(--font-big);
+
+      position: relative;
+      &:first-child {
+      flex: 0.65;
+      }
+      &:nth-child(2) {
+      flex: 0.35;
       }
       & .is-subtitle {
+        position: sticky;
+        top: 0;
+        width: 100%;
+        background-color: var(--is-orange);
+        > h2 {
         font-size: var(--font-lg);
-        text-transform: unset;
         font-family: 'body';
+        text-transform: unset;
         max-width: 18ch;
+        }
+      }
+      > .is-spacing {
+        position: absolute;
+        top: calc(75vh + 4em) ;
+        padding: var(--space-small) 0;
       }
       > .is-cover {
         background-color: var(--is-fushia);
-        flex: 1;
         clip-path: var(--mask);
-        min-height: 50em;
+        height: 75vh;
+        margin-bottom: var(--space-small);
       }
-      > .is-details {
+
+      & .is-details {
         display: flex;
         flex-direction: column;
         gap: var(--space-base);
         margin-left: 50%;
+        justify-content: flex-end;
+        padding-bottom: var(--space-xl);
       }
       & .is-sticky {
         background-color: var(--is-orange);
-        position: relative;
+        position: sticky;
+        top: 0;
         z-index: 2;
-        > h1 {
-          padding-top: 0.75rem;
-        }
+        padding-top: var(--space-small);
       }
-      & h1 {
+      & .is-ticket {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        padding: var(--space-small) 0;
         background-color: var(--is-orange);
+      }
+      & h1, h2 {
         z-index: 2;
+        font-size: var(--font-big);
       }
-      & { 
-        font-family: 'Accent';
+      & p, li {
+        font-family: 'accent';
       }
+    }
+    > .is-genre {
+      position: absolute;
+      right: 0;
     }
     &:last-child .is-items {  
       display: flex;
@@ -170,14 +222,15 @@ section {
     }
     }
     & .is-cta {
-      position: absolute;
-      right: calc(var(--space-base) * 2);
+      position: sticky;
+      top: 0;
+      margin-right: -2.5em;
+      transform: translateX(0.5em);
       display: flex;
       flex-direction: column;
       align-items: center;
       cursor: pointer;
       overflow: hidden;
-      height: 100%;
       span {
       padding-top: var(--space-small);
       font-family: 'Accent';
@@ -193,13 +246,13 @@ section {
       .is-toggle {
         clip-path: var(--mask);
         background-color: var(--is-black);
-        width: 2em;
-        height: 3.5em;
+        width: 1.5em;
+        height: 3em;
         position: relative;
         bottom: 0;
         margin-top: var(--space-base);
         }
     }
   }
-}
+
 </style>

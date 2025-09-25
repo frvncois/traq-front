@@ -22,10 +22,8 @@ onMounted(async () => {
 })
 </script>
 
-<template>
-  <section v-if="event" class="is-orange">
+<template v-if="event" >
     <SingleHero :event="event" />
     <SingleContent :event="event" />
-  </section>
     <SingleEvents :events="store.events.filter(e => e.documentId !== documentId)" />
 </template>

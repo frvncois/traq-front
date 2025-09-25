@@ -24,11 +24,11 @@ const nextEvent = computed(() => {
 <template>
   <section class="is-white" v-if="nextEvent">
     <div class="event is-wrap">
-      <h1>Prochain Événement</h1>
-          <RouterLink to="/programmation" class="events is-cta">
-            <span>Découvrir</span>
-            <div class="is-toggle"></div>
-          </RouterLink>
+      <RouterLink to="/programmation"><h1>Prochain Événement</h1></RouterLink>
+        <RouterLink to="/programmation" class="events is-cta">
+          <span>Découvrir</span>
+          <div class="is-toggle"></div>
+        </RouterLink>
       <RouterLink :to="`/events/${nextEvent.documentId}`" class="event is-next">
         <div class="event is-cover">
           <img
@@ -56,17 +56,20 @@ const nextEvent = computed(() => {
     display: flex;
     flex-direction: column;
     gap: var(--space-small);
+    & h1 {
+      font-size: var(--font-md);
+      &:hover {
+        color: var(--is-orange);
+      }
+    }
     > .is-next {
       position: relative;
       display: flex;
       flex-direction: column;
       gap: var(--space-small);
-      > h1 {
-        text-transform: uppercase;
-      }
       > .is-cover {
         background-color: var(--is-fushia);
-        height: 40em;
+        height: 25em;
         overflow: hidden;
         position: relative;
         > img {
@@ -80,9 +83,13 @@ const nextEvent = computed(() => {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        gap: var(--space-base);
         & div {
           display: flex;
           flex-direction: column;
+          &:nth-child(2) {
+            margin-right: var(--space-width);
+          }
         }
         & h2, span {
           font-size: var(--font-big);
@@ -98,30 +105,32 @@ const nextEvent = computed(() => {
     > .is-cta {
       position: absolute;
       top: 0;
-      right: calc(var(--space-base) * 2);
+      right: calc(var(--space-small) * 2.75);
       display: flex;
       flex-direction: column;
       align-items: center;
       cursor: pointer;
       overflow: hidden;
       height: 100%;
+
       span {
-      text-transform: uppercase;
-      font-family: 'Accent';
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      max-height: 0px;
-      overflow: hidden;
-      white-space: nowrap;
-      position: relative;
-      padding-bottom: 0;
-      transition: max-height 0.75s cubic-bezier(0.85, 0, 0.15, 1), padding-bottom 0.75s cubic-bezier(0.85, 0, 0.15, 1);
+        text-transform: uppercase;
+        font-family: 'Accent';
+        font-size: var(--font-md);
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        max-height: 0px;
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+        padding-bottom: 0;
+        transition: max-height 0.75s cubic-bezier(0.85, 0, 0.15, 1), padding-bottom 0.75s cubic-bezier(0.85, 0, 0.15, 1);
       }
       .is-toggle {
         clip-path: var(--mask);
         background-color: var(--is-black);
-        width: 2em;
-        height: 3.5em;
+        width: 1.5em;
+        height: 3em;
         position: relative;
         bottom: 0;
         }

@@ -3,6 +3,7 @@ import { onMounted } from 'vue'
 import { useContentStore } from '@/stores/content'
 
 import HomeHero from '@/components/home/HomeHero.vue'
+import HomeIntro from '@/components/home/HomeIntro.vue'
 import HomeUpcoming from '@/components/home/HomeUpcoming.vue'
 import HomeEvents from '@/components/home/HomeEvents.vue'
 import HomeDonation from '@/components/home/HomeDonation.vue'
@@ -19,6 +20,7 @@ onMounted(() => {
 <template>
   <main>
     <HomeHero :home="store.home" />
+    <HomeIntro :home="store.home" />
     <HomeUpcoming :events="store.events" />
     <HomeEvents :events="store.events" />
     <HomeDonation :home="store.home" />

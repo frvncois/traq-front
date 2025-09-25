@@ -11,7 +11,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <section>
+  <section v-if="event">
     <div class="hero is-wrap">
       <div class="hero is-logo">
         <RouterLink to="/"><LogoMain /></RouterLink>
@@ -51,7 +51,7 @@ const props = defineProps({
   > .is-logo {
     position: absolute;
     z-index: 1;
-    top: var(--space-base);
+    top: var(--space-small);
     left: var(--space-width);
     color: var(--is-orange);
   }

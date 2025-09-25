@@ -1,35 +1,31 @@
+
 <script setup>
-import { onMounted, onBeforeUnmount } from "vue"
+import { onMounted, ref } from "vue"
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const footerN = ref(null)
+const footerA = ref(null)
 
 onMounted(() => {
-  const fixedImg = document.querySelector(".newsletter.is-elements .is-fixed") // FooterN
-  const aImg = document.querySelector(".newsletter.is-elements img[src*='FooterA']") // FooterA
-
-  if (!fixedImg || !aImg) return
-
-  const handleScroll = () => {
-    const fixedRect = fixedImg.getBoundingClientRect()
-    const aRect = aImg.getBoundingClientRect()
-
-    // Check overlap: if A’s top has entered N’s area → fade N
-    if (aRect.top <= fixedRect.bottom && aRect.bottom >= fixedRect.top) {
-      fixedImg.style.opacity = "0"
-    } else {
-      fixedImg.style.opacity = "1"
-    }
+  if (footerN.value && footerA.value) {
+    gsap.to(footerN.value, {
+      opacity: 0,
+      scrollTrigger: {
+        trigger: footerA.value,
+        start: "top 30%",
+        end: "top 10%",
+        scrub: true
+      }
+    })
   }
-
-  window.addEventListener("scroll", handleScroll, { passive: true })
-  handleScroll()
-
-  onBeforeUnmount(() => {
-    window.removeEventListener("scroll", handleScroll)
-  })
 })
 </script>
 
 <template>
-    <section class="is-white">
+    <section class="is-white is-stack">
         <div class="newsletter is-wrap">
             <div class="newsletter is-intro">
                 <h1>Diffuseur des arts de la scène</h1>
@@ -40,8 +36,8 @@ onMounted(() => {
       <div class="newsletter is-content">
                 <div class="newsletter is-elements">
                     <img src="@/assets/FooterElement.svg" class="is-sticky" />
-                    <img src="@/assets/FooterN.svg" class="is-fixed" />
-                    <img src="@/assets/FooterA.svg" />
+                    <img ref="footerN" src="@/assets/FooterN.svg" class="is-fixed" />
+                    <img ref="footerA" src="@/assets/FooterA.svg" />
                     <img src="@/assets/FooterR.svg" />
                     <img src="@/assets/FooterT.svg" />
                 </div>
@@ -53,42 +49,51 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.is-stack {
+  position: sticky;
+  top:0;
+}
+
 .newsletter {
     &.is-wrap {
     position: relative;
     display: flex;
     flex-direction: column;
     & h1 {
-      font-size: 9vw;
+      font-size: 9.75vw;
       line-height: 1;
       }
     }
   &.is-intro {
-    padding: var(--space-width);
+    padding: var(--space-large) var(--space-width); 
   }
   &.is-content {
     display: flex;
     flex-direction: row;
     gap: var(--space-base);
     background-color: var(--is-orange);
-    padding: var(--space-height) var(--space-width);
+    padding: 0 var(--space-width) calc(var(--space-base) * 2.5) var(--space-width);
   }
   &.is-elements {
     flex: 1;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-small);
     > img {
       height: 70vh;
       z-index: 2;
       position: relative;
       &.is-sticky {
         position: sticky;
-        top: var(--space-base);
+        top: 0;
+        padding-top: var(--space-small);
         z-index: 3;
       }
       &.is-fixed {
         position: sticky;
-        top: var(--space-base);
-        margin-top: -100%;
+        top: var(--space-small);
+        margin-top: calc(-100% - 0.75em);
         z-index: 1;
         opacity: 1;
       }

@@ -37,7 +37,7 @@ const props = defineProps({
     > .is-content {
       display: flex;
       flex-direction: column;
-      gap: var(--space-large);
+      gap: var(--space-xl);
       padding: var(--space-small) var(--space-width);
       > h1 {
         text-transform: uppercase;
@@ -61,6 +61,7 @@ const props = defineProps({
         text-transform: uppercase;
         writing-mode: vertical-rl;
         text-orientation: mixed;
+        font-size: var(--font-md);
         font-family: 'Accent';
         max-height: 0px;
         overflow: hidden;

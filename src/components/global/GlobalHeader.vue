@@ -58,7 +58,7 @@ const updateHeaderColor = () => {
 
 onMounted(() => {
   window.addEventListener('scroll', updateHeaderColor)
-  updateHeaderColor() // Set initial color
+  updateHeaderColor()
 })
 
 onUnmounted(() => {
@@ -69,8 +69,8 @@ onUnmounted(() => {
 <template>
   <header :style="{ color: computedHeaderColor }">
     <div @click="toggleNav">
-      <span>Menu</span>
-      <!-- Apply is-active directly to .is-toggle -->
+      <span v-if="!showNav">Menu</span>
+      <span v-if="showNav">Retour</span>
       <div class="is-toggle" :class="{ 'is-active': showNav }"></div>
     </div>
   </header>
@@ -82,8 +82,8 @@ onUnmounted(() => {
 header {
   display: flex;
   position: fixed;
-  top: var(--space-base);
-  left: var(--space-base);
+  top: var(--space-small);
+  left: calc(var(--space-small) * 0.75);
   padding: 0 var(--space-base);
   z-index: 10;
   transition: color 0.75s cubic-bezier(0.85, 0, 0.15, 1);
@@ -107,6 +107,7 @@ header {
       text-transform: uppercase;
       writing-mode: vertical-rl;
       text-orientation: mixed;
+      font-size: var(--font-md);
       font-family: 'Accent';
       overflow: hidden;
       white-space: nowrap;
@@ -118,20 +119,19 @@ header {
     .is-toggle {
       clip-path: var(--mask);
       background-color: currentColor;
-      width: 1.75em;
+      width: 1.5em;
       height: 3em;
       position: relative;
       bottom: 0;
-      margin-top: 0;
+      margin-top: var(--space-base);
       opacity: 0;
-      transition: margin-top 0.75s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.75s cubic-bezier(0.85, 0, 0.15, 1);
+      transition: margin-top 0.75s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.15s cubic-bezier(0.85, 0, 0.15, 1);
       &.is-active {
         margin-top: var(--space-base);
         opacity: 1;
       }
     }
     &:hover .is-toggle {
-      margin-top: var(--space-base);
       opacity: 1;
     }
   }

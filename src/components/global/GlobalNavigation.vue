@@ -18,7 +18,7 @@ const handleClose = () => {
   
   setTimeout(() => {
     emit('close')
-  }, 1250) // 1s to match the transition duration
+  }, 750)
 }
 
 defineExpose({

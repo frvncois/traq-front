@@ -4,15 +4,17 @@
   --is-fushia: #AC2150;
   --is-white: #FCF7F0;
 
+  --space-xl: 10em;
   --space-large: 6em;
-  --space-width: 6em;
+  --space-width: 4.5em;
   --space-height: 1.5em;
   --space-base: 1em;
   --space-small: 0.5em;
+  --space-xs: 0.25em;
 
   --font-big: 4.5vw;
   --font-lg: 3.5em;
-  --font-md: 1.75em;
+  --font-md: 1.5em;
   --font-rg: 1em;
 
   --mask: polygon(0 0, 100% 0%, 100% 55%, 0% 100%);
@@ -41,12 +43,13 @@
 body {
   margin: 0;
   font-family: 'Body';
-  font-size: 20px;
+  font-size: 22px;
+  line-height: 0.9;
+  letter-spacing: -0.5px;
 }
 
 h1, h2, h3 {
   font-weight: normal;
-  line-height: 0.9;
   margin-block: 0;
   text-transform: uppercase;
   font-family: 'Accent';
@@ -72,6 +75,8 @@ ul, li {
 
 
 section {
+  position: relative;
+  z-index: 2;
   &.is-white {
     background: var(--is-white);
   }

@@ -30,13 +30,14 @@ import LogoMain from '@/assets/LogoMain.vue';
   > .is-content {
     display: flex;
     padding: var(--space-small) var(--space-width);
+    align-items: flex-end;
     justify-content: space-between;
     > h1 {
       font-size: var(--font-big);
     }
     > h2 {
       font-size: var(--font-big);
-      font-family: 'accent';
+      font-family: 'body';
     }
   }
   > .is-logo {

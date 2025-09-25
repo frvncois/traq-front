@@ -13,8 +13,7 @@ const props = defineProps({
 <template>
   <section class="is-white">
     <div class="events is-wrap">
-      <h1>Programmation</h1>
-
+      <h1><RouterLink to="/programmation">Programmation</RouterLink></h1>
           <RouterLink to="/programmation" class="events is-cta">
             <span>Découvrir</span>
             <div class="is-toggle"></div>
@@ -44,72 +43,80 @@ const props = defineProps({
 
 
 <style scoped>
-.events {
-  &.is-wrap {
-    position: relative;
-    padding: 0 var(--space-width) var(--space-width) var(--space-width);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-small);
-    > .is-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-base);
+  .events {
+    &.is-wrap {
       position: relative;
-      > .is-item {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-small);
-        > .is-cover {
-          height: 50vh;
-          overflow: hidden;
-          position: relative;
-          > img {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-          }
-        }
-        > .is-content {
-          display: flex;
-          flex-direction: column;
-          > h1, h2 {
-            font-size: var(--font-md);
-          }
-        }
-        &:hover .is-content {
+      padding: 0 var(--space-width) var(--space-xl) var(--space-width);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-small);
+      > h1 {
+        font-size: var(--font-md);
+        &:hover {
           color: var(--is-orange);
         }
       }
-    }
+      > .is-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-base);
+        position: relative;
+        > .is-item {
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-small);
+          > .is-cover {
+            aspect-ratio: 1;
+            overflow: hidden;
+            position: relative;
+            > img {
+              position: absolute;
+              height: 100%;
+              width: 100%;
+              object-fit: cover;
+            }
+          }
+          > .is-content {
+            display: flex;
+            flex-direction: column;
+            > h1, h2 {
+              font-size: var(--font-md);
+            }
+          }
+          &:hover .is-content {
+            color: var(--is-orange);
+          }
+        }
+      }
     > .is-cta {
       position: absolute;
       top: 0;
-      right: calc(var(--space-base) * 2);
+      right: calc(var(--space-small) * 2.75);
       display: flex;
       flex-direction: column;
       align-items: center;
       cursor: pointer;
       overflow: hidden;
       height: 100%;
+
       span {
-      font-family: 'Accent';
-      text-transform: uppercase;
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      max-height: 0px;
-      overflow: hidden;
-      white-space: nowrap;
-      position: relative;
-      padding-bottom: 0;
-      transition: max-height 0.75s cubic-bezier(0.85, 0, 0.15, 1), padding-bottom 0.75s cubic-bezier(0.85, 0, 0.15, 1);
+        text-transform: uppercase;
+        font-family: 'Accent';
+        font-size: var(--font-md);
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        max-height: 0px;
+        overflow: hidden;
+        white-space: nowrap;
+        position: relative;
+        padding-bottom: 0;
+        transition: max-height 0.75s cubic-bezier(0.85, 0, 0.15, 1), padding-bottom 0.75s cubic-bezier(0.85, 0, 0.15, 1);
       }
       .is-toggle {
         clip-path: var(--mask);
         background-color: var(--is-black);
-        width: 2em;
-        height: 3.5em;
+        width: 1.5em;
+        height: 3em;
         position: relative;
         bottom: 0;
         }

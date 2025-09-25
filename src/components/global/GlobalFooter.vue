@@ -7,7 +7,7 @@ import LogoMain from '@/assets/LogoMain.vue';
     <footer>
         <div class="is-wrap">
             <div class="is-content">
-                <h1>Production Traquen'art</h1>
+                <h1>Productions Traquen'art</h1>
                 <div class="is-item">
                     <span>5445, Av. de Gaspé</span>
                     <span>Bureau 640</span>
@@ -15,20 +15,20 @@ import LogoMain from '@/assets/LogoMain.vue';
                     <span>Canada</span>
                 </div>
                 <div class="is-item">
-                    <a href="tel:5143962288">T.514 396-3388</a>
-                    <a href="tel:5146661250">F.514 666-1250</a>
+                    <div>T.<a href="tel:5143962288">514 396-3388</a></div>
+                    <div>F.<a href="tel:5146661250">514 666-1250</a></div>
                 </div>
                 <div class="is-item">
-                    <a href="mailto:info@traquenart.ca">E.info@traquenart.ca</a>
+                    <div>E.<a href="mailto:info@traquenart.ca">info@traquenart.ca</a></div>
                 </div>
             </div>
             <div class="is-content">
                 <div class="is-item">
-                    <a href="https://www.facebook.com/traquenart" target="_blank">Facebook</a>
-                    <a href="https://www.instagram.com/traquenart.concerts" target="_blank">Instagram</a>
+                    <div><a href="https://www.facebook.com/traquenart" target="_blank">Facebook</a></div>
+                    <div><a href="https://www.instagram.com/traquenart.concerts" target="_blank">Instagram</a></div>
                 </div>
                 <div class="is-item">
-                    <a>Infolettre</a>   
+                   <div><a>Infolettre</a></div>
                 </div>
                 <div class="is-item">
                     <RouterLink to="/programmation">Programmation</RouterLink>
@@ -48,17 +48,20 @@ import LogoMain from '@/assets/LogoMain.vue';
 
 <style scoped>
 footer {
-  background-color: var(--is-orange);
+    position: relative;
+    z-index: 3;
+    background-color: var(--is-orange);
   > .is-wrap {
     display: flex;
     flex-direction: row;
+    gap: var(--space-base);
     padding: var(--space-small) var(--space-width);
     > .is-content {
     display: flex;
     flex-direction: column;
     gap: var(--space-base);
     justify-content: space-between;
-    flex: 1;
+    flex: 2;
         > h1 {
         font-size: var(--font-rg);
         }
@@ -70,19 +73,30 @@ footer {
         flex-direction: column;
         align-items: flex-start;
         font-family: 'Accent';
-            > a {
-                border-bottom: 3px solid var(--is-orange);
-                &:hover {
-                    border-color: var(--is-black);
-                    }
+        > div {
+            display: flex;
+            flex-direction: row;
+            gap: var(--space-xs);
+        }
+        & a {
+            &:hover {
+                text-decoration: underline;
                 }
             }
         }
+    }
     > .is-logo {
+        position: absolute;
+        bottom: var(--space-small);
+        right: var(--space-width);
       display: flex;
       align-items: flex-end;
       justify-content: flex-end;
-      flex: 1;
+      flex: 0.25;
+      & svg {
+        width: auto;
+        height: 8.5em;
+      }
     }
   }
 }

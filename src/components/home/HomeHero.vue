@@ -20,9 +20,6 @@ const props = defineProps({
         <h1>{{ home.heroTitle }}</h1>
         <h2>{{ home.heroSubtitle }}</h2>
       </div>
-      <div class="hero is-about">
-        <p>{{ home.heroIntro }}</p>
-      </div>
     </div>
   </section>
 </template>
@@ -31,15 +28,20 @@ const props = defineProps({
 .hero {
   &.is-wrap {
     display: flex;
-    height: 100vh;
+    height: 90vh;
     overflow: hidden;
     align-items: flex-end;
   }
   &.is-logo {
     color: var(--is-orange);
     position: absolute;
-    top: var(--space-base);
+    top: var(--space-small);
     left: var(--space-width);
+    > svg {
+      width: 10.25em;
+      height: 8.75em;
+      object-fit: contain;
+    }
   }
   &.is-content {
     position: fixed;
@@ -47,10 +49,11 @@ const props = defineProps({
     z-index: -1;
     color: var(--is-orange);
     display: flex;
+    height: 90vh;
     flex-direction: row;
     align-items: flex-end;
+    gap: var(--space-large);
     justify-content: space-between;
-    height: 80vh;
     padding: var(--space-height) var(--space-width) var(--space-small) var(--space-width);
     box-sizing: border-box;
     > img {
@@ -74,16 +77,6 @@ const props = defineProps({
       font-size: var(--font-big);
       font-family: 'Body';
       text-transform: none;
-    }
-  }
-  &.is-about {
-    display: flex;
-    flex-direction: column;
-    background: var(--is-white);
-    height: 20vh;
-    > p {
-      padding: var(--space-small) var(--space-width);
-      font-family: 'Accent';
     }
   }
 }

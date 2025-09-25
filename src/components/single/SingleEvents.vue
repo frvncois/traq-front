@@ -38,6 +38,9 @@ const props = defineProps({
 
 
 <style scoped>
+section {
+  margin-top: calc(-100vh - var(--space-xl));
+}
 .events {
   &.is-wrap {
     position: relative;
@@ -56,7 +59,7 @@ const props = defineProps({
       flex-direction: column;
       gap: var(--space-small);
       > .is-cover {
-        height: 50vh;
+        aspect-ratio: 1;
         overflow: hidden;
         position: relative;
         > img {
