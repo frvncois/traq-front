@@ -33,6 +33,7 @@ defineExpose({
   >
     <nav>
       <div class="is-items">
+        <RouterLink to="/" @click="handleClose">Accueil</RouterLink>
         <RouterLink to="/programmation" @click="handleClose">Programmation</RouterLink>
         <RouterLink to="/apropos" @click="handleClose">À Propos</RouterLink>
         <RouterLink to="/" @click="handleClose">Appuyez-nous</RouterLink>
@@ -72,6 +73,17 @@ nav {
   
   &.is-open {
     clip-path: inset(0 0 0% 0);
+  }
+}
+
+@media (max-width: 768px) {
+  nav {
+    >.is-items {
+      transform: rotate(-90deg);
+      transform-origin: 30% 55%;
+      font-size: 18vw;
+      margin-bottom: 0.25em;
+    }
   }
 }
 </style>

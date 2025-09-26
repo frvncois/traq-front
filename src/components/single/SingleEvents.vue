@@ -38,8 +38,6 @@ const props = defineProps({
 
 
 <style scoped>
-section {
-}
 .events {
   &.is-wrap {
     position: relative;
@@ -47,6 +45,7 @@ section {
     display: flex;
     flex-direction: column;
     gap: var(--space-small);
+    margin-top: -70vh;
   }
   &.is-grid {
     display: grid;

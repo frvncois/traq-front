@@ -141,4 +141,25 @@ const nextEvent = computed(() => {
     padding-bottom: var(--space-small);
   }
 }
+
+@media (max-width: 768px) {
+  .event {
+    &.is-wrap {
+      > .is-next {
+        > .is-content {
+          flex-direction: column;
+          gap: 0;
+        }
+      }
+      > .is-cta {
+        right: 0.25em;
+        .is-toggle {
+          width: 1em;
+          height: 2em;
+        }
+      }
+    }
+  }
+}
+
 </style>

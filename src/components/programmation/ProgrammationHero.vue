@@ -46,4 +46,16 @@ import LogoMain from '@/assets/LogoMain.vue';
     left: var(--space-width);
   }
 }
+
+@media screen and (max-width: 768px) {
+.hero {
+  &.is-wrap {
+    > .is-content {
+      h2 {
+        display: none;
+      }
+    }
+  }
+}
+}
 </style>

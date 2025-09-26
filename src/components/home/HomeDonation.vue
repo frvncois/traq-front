@@ -104,4 +104,22 @@ const props = defineProps({
     padding-bottom: var(--space-small);
   }
 }
+
+@media (max-width: 768px) {
+
+  .donation {
+  &.is-wrap {
+    > .is-cta {
+        right: 0.25em; 
+      & .is-toggle {
+                  width: 1em;
+          height: 2em;
+        }
+      }
+  }
+}
+    p {
+      font-size: var(--font-rg);
+    }
+}
 </style>

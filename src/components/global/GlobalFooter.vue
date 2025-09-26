@@ -100,4 +100,24 @@ footer {
     }
   }
 }
+
+@media (max-width: 768px) {
+    footer {
+    > .is-wrap {
+            flex-direction: column;
+            > .is-logo {
+                position: relative;
+                bottom: unset;
+                right: unset;
+                & a {
+                    flex: 1;
+                }
+                & svg {
+                    height: auto;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
 </style>

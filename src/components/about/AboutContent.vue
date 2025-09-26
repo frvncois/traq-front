@@ -110,4 +110,19 @@ column-count: 2;
 li:empty { 
   padding: var(--space-small);
 }
+
+@media screen and (max-width: 768px) {
+  .about {
+    &.is-content {
+      flex-direction: column;
+      gap: var(--space-base);
+    }
+  }
+}
+
+ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
 </style>

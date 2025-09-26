@@ -35,18 +35,22 @@ import LogoMain from '@/assets/LogoMain.vue';
 </template>
 
 <style scoped>
+section {
+    z-index: 4;
+}
+
 .contact {
   &.is-wrap {
     height: 100vh;
     position: fixed;
     width: 100vw;
-    z-index: 2;
     display: flex;
     justify-content: space-between;
-    padding: var(--space-base) var(--space-large);
+    padding: var(--space-small) var(--space-large);
     box-sizing: border-box;
     gap: var(--space-base);
     background: var(--is-fushia);
+    font-family: 'Accent';
     > .is-content {
         display: flex;
         gap: var(--space-width);
@@ -79,10 +83,34 @@ import LogoMain from '@/assets/LogoMain.vue';
     > .is-logo {
         color: var(--is-black);
         position: absolute;
-        top: var(--space-base);
+        top: var(--space-small);
         left: var(--space-width);
     }
-    
   }
+}
+
+@media (max-width: 768px) {
+    .contact {
+        &.is-wrap {
+            padding: var(--space-small) var(--space-width);
+            flex-direction: column-reverse;
+            > .is-content {
+                flex-direction: column;
+                        &:last-child {
+                    flex: 1;
+                }
+            }
+            > .is-logo {
+                bottom: var(--space-small);
+                top: auto;
+                left: auto;
+                right: var(--space-width);
+                & svg {
+                    height: 6em;
+                    width: auto;
+                }
+            }
+        }
+    }
 }
 </style>

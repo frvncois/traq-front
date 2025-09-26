@@ -136,4 +136,16 @@ header {
     }
   }
 }
+
+@media (max-width: 768px) {
+  header {
+  left: -0.25em;
+    & div {
+    & .is-toggle {
+      height: 2.25em;
+      width: 1em;
+    }
+    }
+  }
+}
 </style>

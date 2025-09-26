@@ -127,4 +127,26 @@ const props = defineProps({
     padding-bottom: var(--space-small);
   }
 }
+
+@media (max-width: 768px) {
+  .events {
+    &.is-wrap {
+      > .is-grid {
+        display: flex;
+        flex-direction: column;
+        > .is-content {
+          flex-direction: column;
+          gap: 0;
+        }
+      }
+      > .is-cta {
+        right: 0.25em;
+        .is-toggle {
+          width: 1em;
+          height: 2em;
+        }
+      }
+    }
+  }
+}
 </style>

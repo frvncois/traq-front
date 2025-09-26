@@ -83,4 +83,23 @@ const props = defineProps({
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+.events {
+  &.is-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-small);
+    > .is-item {
+      > .is-header {
+        h3 {
+          font-size: var(--font-rg);
+        }
+      }
+      .is-cover {
+        height: 15em;
+      }
+    }
+  }
+}
+}
 </style>

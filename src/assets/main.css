@@ -19,6 +19,18 @@
 
   --mask: polygon(0 0, 100% 0%, 100% 55%, 0% 100%);
 }
+ 
+@media (max-width: 768px) {
+  :root {
+    --space-base: 0.5em;
+    --space-width: 1.5em;
+    --space-large: 4em;
+    --font-big: 9vw;
+    --font-lg: 2em;
+    --font-md: 1em;
+    --font-rg: 0.75em;
+  }
+}
 
 @font-face {
   font-family: 'Body';

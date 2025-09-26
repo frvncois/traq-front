@@ -1,6 +1,4 @@
 <script setup>
-import LogoMain from '@/assets/LogoMain.vue'
-
 const props = defineProps({
   home: {
     type: Object,
@@ -34,17 +32,11 @@ section {
     display: flex;
     flex-direction: column;
     background: var(--is-white);
-    height: 25vh;
+      padding: var(--space-small) var(--space-width) var(--space-large) var(--space-width);
     > p {
-      padding: var(--space-small) var(--space-width);
       font-family: 'Accent';
+      font-size: var(--font-rg);
     }
-  }
-}
-
-@media screen and (max-width: 768px) {
-  h2 {
-    display: none;
   }
 }
 </style>
