@@ -57,7 +57,7 @@ nav {
   > .is-items {
     display: flex;
     flex-direction: column;
-    font-size: 9.5vw;
+    font-size: clamp(1em, 9vw, 8em);
     text-transform: uppercase;
     line-height: 1;
   }
