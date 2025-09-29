@@ -1,25 +1,21 @@
 <script setup>
 import GlobalNavigation from '@/components/global/GlobalNavigation.vue'
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, nextTick, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 const showNav = ref(false)
 const headerColor = ref('var(--is-orange)')
 const globalNavRef = ref(null)
 
-const computedHeaderColor = computed(() => {
-  return showNav.value ? 'var(--is-dark)' : headerColor.value
-})
+const route = useRoute()
+
+const computedHeaderColor = computed(() =>
+  showNav.value ? 'var(--is-dark)' : headerColor.value
+)
 
 const toggleNav = () => {
-  if (!showNav.value) {
-    // Open the navigation
-    showNav.value = true
-  } else {
-    // Close the navigation with animation
-    if (globalNavRef.value) {
-      globalNavRef.value.handleClose()
-    }
-  }
+  if (!showNav.value) showNav.value = true
+  else if (globalNavRef.value) globalNavRef.value.handleClose()
 }
 
 const closeNav = () => {
@@ -27,44 +23,59 @@ const closeNav = () => {
   updateHeaderColor()
 }
 
+// ✅ Always run this after new route renders
+watch(
+  () => route.fullPath,
+  async () => {
+    await nextTick()
+    requestAnimationFrame(() => {
+      updateHeaderColor()
+    })
+  }
+)
+
 const updateHeaderColor = () => {
   const sections = document.querySelectorAll('section')
   const scrollPosition = window.scrollY + window.innerHeight / 2
-  
+
   let currentSection = null
-  
-  // Find which section is currently in view
+
   sections.forEach(section => {
     const rect = section.getBoundingClientRect()
     const sectionTop = rect.top + window.scrollY
     const sectionBottom = sectionTop + rect.height
-    
+
     if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
       currentSection = section
     }
   })
-  
-  if (currentSection) {
-    if (currentSection.classList.contains('is-orange') ||
-        currentSection.classList.contains('is-fushia')) {
-      headerColor.value = 'var(--is-black)'
-    } else if (currentSection.classList.contains('is-white')) {
-      headerColor.value = 'var(--is-orange)'
-    } else {
-      headerColor.value = 'var(--is-orange)'
-    }
+
+  if (!currentSection) return
+
+  if (currentSection.classList.contains('is-fushia')) {
+    headerColor.value = 'var(--is-black)'
+  } else if (currentSection.classList.contains('is-orange')) {
+    headerColor.value = 'var(--is-black)'
+  } else if (currentSection.classList.contains('is-white')) {
+    headerColor.value = 'var(--is-orange)'
+  } else {
+    headerColor.value = 'var(--is-orange)'
   }
 }
 
 onMounted(() => {
   window.addEventListener('scroll', updateHeaderColor)
+  window.addEventListener('resize', updateHeaderColor)
   updateHeaderColor()
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', updateHeaderColor)
+  window.removeEventListener('resize', updateHeaderColor)
 })
 </script>
+
+
 
 <template>
   <header :style="{ color: computedHeaderColor }">

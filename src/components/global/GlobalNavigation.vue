@@ -1,10 +1,12 @@
 <script setup>
-import { RouterLink } from 'vue-router'
-import { ref, onMounted } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
+import { ref, onMounted, computed } from 'vue'
 
 const emit = defineEmits(['close'])
 const isAnimated = ref(false)
 const isClosing = ref(false)
+
+const route = useRoute()
 
 onMounted(() => {
   setTimeout(() => {
@@ -15,33 +17,49 @@ onMounted(() => {
 const handleClose = () => {
   isClosing.value = true
   isAnimated.value = false
-  
+
   setTimeout(() => {
     emit('close')
   }, 750)
 }
 
-defineExpose({
-  handleClose
-})
+// Navigation items
+const navItems = [
+  { name: 'home', label: 'Accueil', path: '/' },
+  { name: 'programmation', label: 'Programmation', path: '/programmation' },
+  { name: 'about', label: 'À Propos', path: '/apropos' },
+  { name: 'support', label: 'Appuyez-nous', path: '/' },
+  { name: 'contact', label: 'Contact', path: '/contact' }
+]
+
+// Filter out current route
+const filteredNav = computed(() =>
+  navItems.filter(item => item.name !== route.name)
+)
+
+defineExpose({ handleClose })
 </script>
 
 <template>
-  <div 
-    class="transition" 
+  <div
+    class="transition"
     :class="{ 'is-open': isAnimated, 'is-closing': isClosing }"
   >
     <nav>
       <div class="is-items">
-        <RouterLink to="/" @click="handleClose">Accueil</RouterLink>
-        <RouterLink to="/programmation" @click="handleClose">Programmation</RouterLink>
-        <RouterLink to="/apropos" @click="handleClose">À Propos</RouterLink>
-        <RouterLink to="/" @click="handleClose">Appuyez-nous</RouterLink>
-        <RouterLink to="/contact" @click="handleClose">Contact</RouterLink>
+        <RouterLink
+          v-for="item in filteredNav"
+          :key="item.name"
+          :to="item.path"
+          @click="handleClose"
+        >
+          {{ item.label }}
+        </RouterLink>
       </div>
     </nav>
   </div>
 </template>
+
 
 <style scoped>
 nav {
@@ -80,7 +98,7 @@ nav {
   nav {
     >.is-items {
       transform: rotate(-90deg);
-      transform-origin: 30% 55%;
+      transform-origin: 28% 50%;
       font-size: 18vw;
       margin-bottom: 0.25em;
     }
