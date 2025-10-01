@@ -8,7 +8,6 @@ const props = defineProps({
 </script>
 <template>
   <section
-    ref="sectionRef"
     class="is-white"
     v-if="home"
   >
@@ -77,14 +76,10 @@ const props = defineProps({
       .is-toggle {
         clip-path: var(--mask);
         background-color: var(--is-black);
-        width: 2em;
-        height: 3.5em;
+        width: 1.5em;
+        height: 3em;
         position: relative;
         bottom: 0;
-      }
-      &:hover span {
-        max-height: 500px;
-        padding-bottom: var(--space-small);
       }
     }
     > .is-cover {
@@ -99,27 +94,28 @@ const props = defineProps({
       }
     }
   }
-      &:hover .is-cta span {
+  &:hover .is-cta span {
     max-height: 500px;
-    padding-bottom: var(--space-small);
+    padding-bottom: var(--space-xs);
   }
 }
 
 @media (max-width: 768px) {
 
-  .donation {
+.donation {
   &.is-wrap {
     > .is-cta {
         right: 0.25em; 
       & .is-toggle {
-                  width: 1em;
+          width: 1em;
           height: 2em;
         }
       }
   }
 }
-    p {
-      font-size: var(--font-rg);
-    }
+
+p {
+    font-size: var(--font-rg);
+  }
 }
 </style>

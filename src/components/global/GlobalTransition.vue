@@ -1,63 +1,69 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import gsap from 'gsap'
 
 const router = useRouter()
-const isTransitioning = ref(false)
-const isPageLoad = ref(true)
+const transitionElement = ref(null)
 
 onMounted(() => {
-  setTimeout(() => {
-    isPageLoad.value = false
-  }, 100)
+  gsap.fromTo(
+    transitionElement.value,
+    { height: '100vh' },
+    {
+      height: '0vh',
+      duration: 0.8,
+      ease: 'power2.inOut',
+    }
+  )
 })
 
 router.beforeEach((to, from, next) => {
-  if (from.name) { 
-    isTransitioning.value = true
-    
-    setTimeout(() => {
-      next()
-    }, 1000)
+  if (from.name) {
+    gsap.fromTo(
+      transitionElement.value,
+      { height: '0vh' },
+      {
+        height: '100vh',
+        duration: 0.6,
+        ease: 'power2.inOut',
+        onComplete: () => {
+          if (window.lenis) {
+            window.lenis.scrollTo(0, { immediate: true })
+          }
+          next()
+        }
+      }
+    )
   } else {
     next()
   }
 })
 
 router.afterEach(() => {
-  setTimeout(() => {
-    isTransitioning.value = false
-  }, 100)
+  gsap.to(transitionElement.value, {
+    height: '0vh',
+    duration: 0.6,
+    ease: 'power2.inOut',
+  })
 })
 </script>
 
 <template>
-  <div 
+  <div
+    ref="transitionElement"
     class="global-transition"
-    :class="{ 
-      'is-transitioning': isTransitioning, 
-      'is-page-load': isPageLoad 
-    }"
   ></div>
 </template>
 
 <style scoped>
 .global-transition {
   position: fixed;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100vw;
   height: 0vh;
   background-color: var(--is-orange);
   z-index: 8;
-  transition: height 0.5s cubic-bezier(0.85, 0, 0.15, 1);
-}
-
-.global-transition.is-page-load {
-  height: 100vh;
-}
-
-.global-transition.is-transitioning {
-  height: 100vh;
 }
 </style>

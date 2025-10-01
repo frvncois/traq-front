@@ -69,7 +69,7 @@ nav {
   z-index: 9;
   display: flex;
   align-items: flex-end;
-  padding: var(--space-height) var(--space-width);
+  padding: var(--space-small) var(--space-width);
   font-family: 'Accent';
   
   > .is-items {
@@ -78,6 +78,9 @@ nav {
     font-size: clamp(1em, 9vw, 8em);
     text-transform: uppercase;
     line-height: 1;
+    > a {
+      line-height: 0.95;
+    }
   }
 }
 

@@ -45,7 +45,6 @@ const props = defineProps({
     display: flex;
     flex-direction: column;
     gap: var(--space-small);
-    margin-top: -70vh;
   }
   &.is-grid {
     display: grid;

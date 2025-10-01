@@ -10,12 +10,13 @@ const props = defineProps({
 <template>
   <section class="is-white" v-if="about">
     <div class="about is-wrap">
-      <div class="about is-content">
+      <div class="about is-content is-sticky">
         <p v-html="about.aboutIntro"></p>
       </div>
       <div class="about is-content">
         <div class="about is-item">
           <div class="about is-cover">
+            <div class="about is-mask"></div>
             <img :src="`${about.aboutImage?.url}`" />
           </div>
         </div>
@@ -61,6 +62,14 @@ const props = defineProps({
     display: flex;
     padding: var(--space-small) var(--space-width);
     gap: var(--space-large);
+    position: relative;
+    z-index: 2;
+    background-color: var(--is-white);
+    &.is-sticky {
+      position: sticky;
+      top:0;
+      z-index: 1;
+    }
   }
   > .is-item {
     flex: 1;
@@ -70,11 +79,19 @@ const props = defineProps({
   }
   > .is-cover {
     background-color: var(--is-fushia);
-    clip-path: var(--mask);
-    height: calc(100vh - var(--space-height));
+    height: calc(100vh - var(--space-base) * 2);
     overflow: hidden;
     position: sticky;
     top: var(--space-base);
+    > .is-mask {
+      background-color: var(--is-white);
+      width: 100%;
+      position: absolute;
+      z-index: 2;
+      bottom: 0;
+      aspect-ratio: 1;
+      clip-path: var(--cover);
+    }
     > img {
       object-fit: cover;
       position: absolute;

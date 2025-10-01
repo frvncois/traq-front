@@ -23,29 +23,36 @@ const closeNav = () => {
   updateHeaderColor()
 }
 
-// ✅ Always run this after new route renders
 watch(
   () => route.fullPath,
   async () => {
     await nextTick()
-    requestAnimationFrame(() => {
+    setTimeout(() => {
       updateHeaderColor()
-    })
-  }
+    }, 100)
+  },
+  { immediate: true }
 )
 
 const updateHeaderColor = () => {
+  if (route.name === 'contact') {
+    headerColor.value = 'var(--is-black)'
+    return
+  }
+
   const sections = document.querySelectorAll('section')
-  const scrollPosition = window.scrollY + window.innerHeight / 2
+  const headerRect = document.querySelector('header')?.getBoundingClientRect()
+
+  if (!headerRect) return
+
+  const headerCenter = headerRect.top + headerRect.height / 2
 
   let currentSection = null
 
   sections.forEach(section => {
     const rect = section.getBoundingClientRect()
-    const sectionTop = rect.top + window.scrollY
-    const sectionBottom = sectionTop + rect.height
 
-    if (scrollPosition >= sectionTop && scrollPosition <= sectionBottom) {
+    if (headerCenter >= rect.top && headerCenter <= rect.bottom) {
       currentSection = section
     }
   })
@@ -75,13 +82,10 @@ onUnmounted(() => {
 })
 </script>
 
-
-
 <template>
   <header :style="{ color: computedHeaderColor }">
     <div @click="toggleNav">
-      <span v-if="!showNav">Menu</span>
-      <span v-if="showNav">Retour</span>
+      <span>Menu</span>
       <div class="is-toggle" :class="{ 'is-active': showNav }"></div>
     </div>
   </header>
@@ -97,7 +101,7 @@ header {
   left: calc(var(--space-small) * 0.75);
   padding: 0 var(--space-base);
   z-index: 10;
-  transition: color 0.75s cubic-bezier(0.85, 0, 0.15, 1);
+  transition: color 0.5s cubic-bezier(0.85, 0, 0.15, 1);
   
   > svg {
     width: 10em;
@@ -123,8 +127,7 @@ header {
       overflow: hidden;
       white-space: nowrap;
       position: relative;
-      padding-bottom: 0;
-      transition: max-height 0.75s cubic-bezier(0.85, 0, 0.15, 1), padding-bottom 0.75s cubic-bezier(0.85, 0, 0.15, 1);
+      transition: margin-top 0.5s ease-in-out;
     }
     
     .is-toggle {
@@ -134,16 +137,15 @@ header {
       height: 3em;
       position: relative;
       bottom: 0;
-      margin-top: var(--space-base);
+      margin-top: var(--space-small);
       opacity: 0;
-      transition: margin-top 0.75s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.15s cubic-bezier(0.85, 0, 0.15, 1);
-      &.is-active {
-        margin-top: var(--space-base);
-        opacity: 1;
-      }
+      transition: opacity 0.5s ease-in-out;
     }
     &:hover .is-toggle {
       opacity: 1;
+    }
+    &:hover span {
+      margin-top: var(--space-small);
     }
   }
 }

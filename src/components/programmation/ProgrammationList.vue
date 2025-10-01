@@ -1,6 +1,11 @@
 <script setup>
+import { onMounted, onBeforeUnmount, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { formatDate } from '@/services/time'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const props = defineProps({
   events: {
@@ -8,33 +13,64 @@ const props = defineProps({
     default: () => []
   }
 })
+
+const gridElement = ref(null)
+const sectionElement = ref(null)
+let ctx = null
+
+onMounted(() => {
+  setTimeout(() => {
+    if (!gridElement.value || !sectionElement.value) return
+
+    ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: gridElement.value,
+        start: "bottom bottom",
+        end: "max",
+        pin: true,
+        pinSpacing: false,
+      })
+    })
+  }, 300)
+})
+
+onBeforeUnmount(() => {
+  if (ctx) {
+    ctx.revert()
+  }
+})
 </script>
 
 
 <template>
-  <div class="events is-grid">
-    <RouterLink
-      v-for="event in events"
-      :key="event.documentId"
-      :to="`/events/${event.documentId}`"
-      class="is-item">
+  <section ref="sectionElement" class="is-white">
+    <div ref="gridElement" class="events is-grid">
+      <RouterLink
+        v-for="event in events"
+        :key="event.documentId"
+        :to="`/events/${event.documentId}`"
+        class="is-item">
 
-        <div class="events is-cover">
-          <img
-            v-if="event.eventCover?.url"
-            :src="`${event.eventCover.url}`"
-            :alt="event.eventTitle"
-          />
-        </div>
-        <div class="events is-header">
-          <h3>{{ event.eventGenre }}</h3> / <h3>{{ event.eventOrigin }}</h3>
-        </div>
-        <div class="events is-details">
-          <h1>{{ event.eventTitle }}</h1>
-          <h2>{{ formatDate(event.eventDate) }}</h2>
-        </div>
-  </RouterLink>
-</div>
+          <div class="events is-cover">
+            <img
+              v-if="event.eventCover?.url"
+              :src="`${event.eventCover.url}`"
+              :alt="event.eventTitle"
+            />
+          </div>
+
+          <div class="events is-header">
+            <h3>{{ event.eventGenre }}</h3> / <h3>{{ event.eventOrigin }}</h3>
+          </div>
+
+          <div class="events is-details">
+            <h1>{{ event.eventTitle }}</h1>
+            <h2>{{ formatDate(event.eventDate) }}</h2>
+          </div>
+
+      </RouterLink>
+    </div>
+  </section>
 </template>
 
 <style scoped>
@@ -50,10 +86,11 @@ const props = defineProps({
       flex-direction: column;
       gap: var(--space-base);
       > .is-cover {
-        height: 50vh;
         overflow: hidden;
         position: relative;
         clip-path: var(--mask);
+        aspect-ratio: 9 / 16;
+        flex-shrink: 0;
         > img {
           position: absolute;
           height: 100%;

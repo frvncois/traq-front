@@ -124,7 +124,7 @@ const props = defineProps({
     }
     &:hover .is-cta span {
     max-height: 500px;
-    padding-bottom: var(--space-small);
+    padding-bottom: var(--space-xs);
   }
 }
 

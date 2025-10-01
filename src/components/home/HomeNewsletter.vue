@@ -1,34 +1,3 @@
-<script setup>
-import { onMounted, onBeforeUnmount, ref } from "vue"
-
-const footerN = ref(null)
-const orangeSection = ref(null)
-
-onMounted(() => {
-  const section = orangeSection.value
-  const target = footerN.value
-  if (!section || !target) return
-
-  const onScroll = () => {
-    const rect = section.getBoundingClientRect()
-    const total = rect.height
-    const scrolled = Math.min(Math.max(-rect.top, 0), total) // clamp 0–total
-    const progress = scrolled / total
-
-    // fade out after 10% scrolled
-    const opacity = progress < 0.5 ? 1 - progress / 0.1 : 0
-    target.style.opacity = opacity
-  }
-
-  window.addEventListener("scroll", onScroll, { passive: true })
-  onScroll() // run once
-
-  onBeforeUnmount(() => {
-    window.removeEventListener("scroll", onScroll)
-  })
-})
-</script>
-
 <template>
 <section class="is-white is-stack">
   <div class="newsletter is-wrap">
@@ -38,11 +7,11 @@ onMounted(() => {
   </div>
 </section>
 
-<section ref="orangeSection" class="is-orange">
+<section class="is-orange">
   <div class="newsletter is-content">
     <div class="newsletter is-elements">
-      <img src="@/assets/FooterElement.svg" class="is-sticky" />
-      <img ref="footerN" src="@/assets/FooterN.svg" class="is-fixed" />
+      <img src="@/assets/FooterElement.svg"/>
+      <img src="@/assets/FooterN.svg"/>
       <img src="@/assets/FooterA.svg" />
       <img src="@/assets/FooterR.svg" />
       <img src="@/assets/FooterT.svg" />
@@ -71,11 +40,12 @@ onMounted(() => {
       }
     }
   &.is-intro {
-    padding: var(--space-large) var(--space-width); 
+    padding: var(--space-width); 
   }
   &.is-content {
     display: flex;
     flex-direction: row;
+    align-items: flex-start;
     gap: var(--space-base);
     background-color: var(--is-orange);
     padding: 0 var(--space-width) calc(var(--space-base) * 2.5) var(--space-width);
@@ -84,24 +54,22 @@ onMounted(() => {
     flex: 1;
     position: relative;
     display: flex;
+    gap: var(--space-base);
     flex-direction: column;
-    gap: var(--space-small);
+    padding-top: var(--space-base);
     > img {
-      height: 70vh;
+      aspect-ratio: 1;
       z-index: 2;
       position: relative;
-      &.is-sticky {
+      &:first-child {
         position: sticky;
-        top: var(--space-small);
-        margin-top: var(--space-small);
+        top: var(--space-base);
         z-index: 3;
       }
-      &.is-fixed {
+      &:nth-child(2) {
         position: sticky;
-        top: var(--space-small);
-        margin-top: calc(-70vh - 0.5em);
-        z-index: 1;
-        opacity: 1;
+        top: var(--space-base);
+        margin-top: calc(-100% - var(--space-base));
       }
     }
   }
@@ -109,8 +77,11 @@ onMounted(() => {
     flex: 1;
       position: sticky;
       top: var(--space-base);
+      margin-top: var(--space-base);
+    
     & h2 {
       font-size: var(--font-lg);
+      margin-top: -0.125em;
     }
   }
 }
@@ -133,9 +104,6 @@ onMounted(() => {
     > img {
       max-width: 100%;
       height: 100%;
-      &.is-fixed {
-        margin-top: -122.5%;
-      }
     }
   }
 }
