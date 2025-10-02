@@ -47,6 +47,7 @@ onBeforeUnmount(() => {
         <p v-html="about.aboutIntro"></p>
       </div>
       <div class="about is-content">
+        <div class="about is-item"></div>
         <div class="about is-item">
           <p v-html="about.aboutContent"></p>
           <ul v-if="about.artistsLocal">
