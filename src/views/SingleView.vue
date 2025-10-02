@@ -25,5 +25,5 @@ onMounted(async () => {
 <template v-if="event" >
     <SingleHero :event="event" />
     <SingleContent :event="event" />
-    <SingleEvents :events="store.events.filter(e => e.documentId !== documentId)" />
+    <SingleEvents :event="event" :events="store.events.filter(e => e.documentId !== documentId)" />
 </template>

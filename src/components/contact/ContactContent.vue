@@ -28,6 +28,7 @@ import LogoMain from '@/assets/LogoMain.vue';
                 </div>
             </div>
             <div class="contact is-content">
+                <div class="about is-mask"></div>
                 <div class="contact is-cover"></div>
             </div>
         </div>
@@ -70,14 +71,23 @@ section {
         > .is-cover {
             background-color: var(--is-orange);
             flex: 1;
-            clip-path: var(--mask);
             height: 100%;
+        }
+        > .is-mask {
+            background-color: var(--is-fushia);
+            width: 100%;
+            position: absolute;
+            z-index: 2;
+            bottom: 0;
+            aspect-ratio: 1;
+            clip-path: var(--cover);
         }
         &:first-child {
             flex: 1;
         }
         &:last-child {
             flex: 0.75;
+            position: relative;
         }
     }
     > .is-logo {

@@ -52,6 +52,7 @@
   }
   &.is-elements {
     flex: 1;
+    flex-shrink: 1;
     position: relative;
     display: flex;
     gap: var(--space-base);
@@ -61,6 +62,7 @@
       aspect-ratio: 1;
       z-index: 2;
       position: relative;
+      width: 100%;
       &:first-child {
         position: sticky;
         top: var(--space-base);

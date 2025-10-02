@@ -1,25 +1,52 @@
 <script setup>
+import { onMounted, onBeforeUnmount, ref } from 'vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
 const props = defineProps({
   about: {
     type: Object,
     default: () => null
   }
 })
+
+const gridElement = ref(null)
+const sectionElement = ref(null)
+let ctx = null
+
+onMounted(() => {
+  setTimeout(() => {
+    if (!gridElement.value || !sectionElement.value) return
+
+    ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: gridElement.value,
+        start: "bottom bottom",
+        end: "max",
+        pin: true,
+        pinSpacing: false,
+      })
+    })
+  }, 300)
+})
+
+onBeforeUnmount(() => {
+  if (ctx) {
+    ctx.revert()
+  }
+})
 </script>
 
+
 <template>
-  <section class="is-white" v-if="about">
-    <div class="about is-wrap">
+  <section class="is-white" v-if="about" ref="sectionElement">
+    <div class="about is-wrap" ref="gridElement">
       <div class="about is-content is-sticky">
         <p v-html="about.aboutIntro"></p>
       </div>
       <div class="about is-content">
-        <div class="about is-item">
-          <div class="about is-cover">
-            <div class="about is-mask"></div>
-            <img :src="`${about.aboutImage?.url}`" />
-          </div>
-        </div>
         <div class="about is-item">
           <p v-html="about.aboutContent"></p>
           <ul v-if="about.artistsLocal">

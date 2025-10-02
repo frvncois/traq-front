@@ -86,17 +86,17 @@ footer {
         }
     }
     > .is-logo {
-        position: absolute;
+        position: relative;
         bottom: var(--space-small);
         right: var(--space-width);
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-end;
-      flex: 0.25;
-      & svg {
-        width: auto;
-        height: 8.5em;
-      }
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        flex: 0.25;
+        & svg {
+            width: auto;
+            height: 8.5em;
+        }
     }
   }
 }
