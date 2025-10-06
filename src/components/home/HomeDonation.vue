@@ -89,6 +89,7 @@ const props = defineProps({
       background-attachment: fixed;
       background-size: cover;
       background-position: center;
+      width: 100vw;
       > img {
         position: absolute;
         inset: 0;
