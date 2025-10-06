@@ -142,9 +142,6 @@ onBeforeUnmount(() => {
           font-size: var(--font-rg);
         }
       }
-      .is-cover {
-        height: 15em;
-      }
     }
   }
 }
