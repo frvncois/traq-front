@@ -56,4 +56,13 @@ const props = defineProps({
     color: var(--is-orange);
   }
 }
+
+@media screen and (max-width: 768px) {
+  .hero {
+    &.is-logo svg {
+      height: 6em;
+      width: auto;
+    }
+  }
+}
 </style>

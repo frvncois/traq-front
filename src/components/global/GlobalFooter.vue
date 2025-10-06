@@ -104,17 +104,27 @@ footer {
 @media (max-width: 768px) {
     footer {
     > .is-wrap {
-            flex-direction: column;
-            > .is-logo {
-                position: relative;
-                bottom: unset;
-                right: unset;
-                & a {
-                    flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-base);
+            > .is-content {
+                gap: var(--space-base);
+                > h1 {
+                    font-size: var(--font-rg);
                 }
+                > .is-item {
+                    font-size: var(--font-rg);
+                }
+            }
+            > .is-content:first-child {
+                grid-column: span 2;
+            }
+            > .is-logo {
+                    bottom: 0;
+                    right: 0;
                 & svg {
                     height: auto;
-                    width: 100%;
+                    width: 4.5em;
                 }
             }
         }

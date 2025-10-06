@@ -153,6 +153,7 @@ const props = defineProps({
       > .is-grid {
         display: flex;
         flex-direction: column;
+        padding-bottom: var(--space-width);
         > .is-content {
           flex-direction: column;
           gap: 0;

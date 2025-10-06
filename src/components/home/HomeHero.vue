@@ -85,5 +85,17 @@ const props = defineProps({
   h2 {
     display: none;
   }
+  .hero {
+    &.is-wrap {
+      height: 80vh;
+    }
+    &.is-content {
+      height: 80vh;
+    }
+    &.is-logo svg {
+      height: auto;
+      width: 6em;
+    }
+  }
 }
 </style>

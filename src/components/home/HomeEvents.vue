@@ -131,6 +131,7 @@ const props = defineProps({
 @media (max-width: 768px) {
   .events {
     &.is-wrap {
+        padding-bottom: var(--space-width);
       > .is-grid {
         display: flex;
         flex-direction: column;

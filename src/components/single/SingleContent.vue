@@ -37,17 +37,9 @@ onMounted(() => {
     ctx = gsap.context(() => {
       const titleHeight = titleElement.value.offsetHeight
 
+      // Pin animations for title and subtitle on all screens
       ScrollTrigger.create({
         trigger: titleElement.value,
-        start: "top top",
-        endTrigger: sectionElement.value,
-        end: "bottom top",
-        pin: true,
-        pinSpacing: false,
-      })
-
-      ScrollTrigger.create({
-        trigger: ticketElement.value,
         start: "top top",
         endTrigger: sectionElement.value,
         end: "bottom top",
@@ -64,14 +56,26 @@ onMounted(() => {
         pinSpacing: false,
       })
 
-      ScrollTrigger.create({
-        trigger: ctaElement.value,
-        start: "top top",
-        endTrigger: sectionElement.value,
-        end: "bottom top",
-        pin: true,
-        pinSpacing: false,
-      })
+      // Skip other pin animations on screens under 768px
+      if (window.innerWidth >= 768) {
+        ScrollTrigger.create({
+          trigger: ticketElement.value,
+          start: "top top",
+          endTrigger: sectionElement.value,
+          end: "bottom top",
+          pin: true,
+          pinSpacing: false,
+        })
+
+        ScrollTrigger.create({
+          trigger: ctaElement.value,
+          start: "top top",
+          endTrigger: sectionElement.value,
+          end: "bottom top",
+          pin: true,
+          pinSpacing: false,
+        })
+      }
     })
   }, 300)
 })
@@ -160,12 +164,13 @@ onBeforeUnmount(() => {
       padding-top: var(--space-small);
       & .is-title {
         background-color: var(--is-orange);
-        z-index: 3;
+        z-index: 10;
         position: relative;
       }
       & .is-subtitle {
         width: 100%;
         background-color: var(--is-orange);
+        z-index: 10;
         > h2 {
         font-size: var(--font-lg);
         font-family: 'body';
@@ -216,6 +221,7 @@ onBeforeUnmount(() => {
   }
   &.is-cta {
         position: absolute;
+        z-index: 9;
         top: 0;
         right: calc(var(--space-small) * 2.75);
         display: flex;
@@ -251,28 +257,32 @@ onBeforeUnmount(() => {
 @media screen and (max-width: 768px) {
   .event {
     &.is-wrap {
-      &.is-desktop {
-        display: none;
-      }
-      &.is-mobile {
         display: flex;
         flex-direction: column;
-      }
+
       > .is-content {
         gap: var(--space-width);
-        > .is-sticky {
-          position: relative;
-        }
-        > .is-ticket {
-          position: relative;
-        }
-          > .is-details {
-            margin-left: unset;
-            padding-bottom: unset;
-          
-        }
       }
     }
+        &.is-cta {
+        right: 0.25em;
+          span {
+            padding-top: var(--space-small);
+            font-family: 'Accent';
+            text-transform: uppercase;
+            font-size: var(--font-md);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            padding-bottom: 0;
+          }
+      .is-toggle {
+width: 1em;
+          height: 2em;
+      }
+  }
   }
 }
 </style>

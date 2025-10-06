@@ -99,9 +99,11 @@ nav {
 
 @media (max-width: 768px) {
   nav {
-    >.is-items {
-      transform: rotate(-90deg);
-      transform-origin: 28% 50%;
+    display: flex;
+    justify-content: center;
+    > .is-items {
+      writing-mode: vertical-rl; 
+      transform: rotate(180deg); 
       font-size: 18vw;
       margin-bottom: 0.25em;
     }

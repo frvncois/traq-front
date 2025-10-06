@@ -52,6 +52,7 @@ onBeforeUnmount(() => {
         class="is-item">
 
           <div class="events is-cover">
+                <div class="events is-mask"></div>
             <img
               v-if="event.eventCover?.url"
               :src="`${event.eventCover.url}`"
@@ -88,9 +89,17 @@ onBeforeUnmount(() => {
       > .is-cover {
         overflow: hidden;
         position: relative;
-        clip-path: var(--mask);
         aspect-ratio: 9 / 16;
         flex-shrink: 0;
+          > .is-mask {
+            background-color: var(--is-white);
+            width: 100%;
+            position: absolute;
+            z-index: 2;
+            bottom: 0;
+            aspect-ratio: 1;
+            clip-path: var(--cover);
+          }
         > img {
           position: absolute;
           height: 100%;
@@ -126,6 +135,7 @@ onBeforeUnmount(() => {
   &.is-grid {
     grid-template-columns: 1fr 1fr;
     gap: var(--space-small);
+    padding-bottom: var(--space-large);
     > .is-item {
       > .is-header {
         h3 {

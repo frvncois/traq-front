@@ -39,4 +39,13 @@ import LogoMain from '@/assets/LogoMain.vue';
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .hero {
+    &.is-logo svg {
+      height: 6em;
+      width: auto;
+    }
+  }
+}
 </style>

@@ -161,6 +161,7 @@ li:empty {
     &.is-content {
       flex-direction: column;
       gap: var(--space-base);
+      padding-bottom: var(--space-width);
     }
   }
 }
@@ -169,5 +170,6 @@ ul {
     display: flex;
     flex-direction: column;
     gap: 0;
+    padding-bottom: var(--space-width);
 }
 </style>

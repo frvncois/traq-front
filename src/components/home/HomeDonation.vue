@@ -88,6 +88,7 @@ const props = defineProps({
       overflow: hidden;
       background-attachment: fixed;
       background-size: cover;
+      background-position: center;
       > img {
         position: absolute;
         inset: 0;
@@ -104,6 +105,9 @@ const props = defineProps({
 
 .donation {
   &.is-wrap {
+    > .is-content {
+      padding-top: unset;
+    }
     > .is-cta {
         right: 0.25em; 
       & .is-toggle {
