@@ -23,10 +23,13 @@ onMounted(() => {
   setTimeout(() => {
     if (!elementsFixed.value) return
 
+    const cta = document.querySelector('.newsletter.is-cta')
+
     st = ScrollTrigger.create({
       trigger: elementsFixed.value,
       start: 'top top',
-      end: 'max',
+      endTrigger: cta,
+      end: '380% bottom',
       pin: true,
       pinSpacing: false,
     })
@@ -35,10 +38,13 @@ onMounted(() => {
   setTimeout(() => {
     if (!elementsFixed2.value) return
 
+    const cta = document.querySelector('.newsletter.is-cta')
+
     st2 = ScrollTrigger.create({
       trigger: elementsFixed2.value,
       start: 'top top',
-      end: 'max',
+      endTrigger: cta,
+      end: '380% bottom',
       pin: true,
       pinSpacing: false,
     })
@@ -50,7 +56,8 @@ onMounted(() => {
     stCta = ScrollTrigger.create({
       trigger: ctaFixed.value,
       start: 'top top',
-      end: 'max',
+      endTrigger: '.newsletter.is-content',
+      end: 'bottom bottom',
       pin: true,
       pinSpacing: false,
     })
@@ -151,6 +158,8 @@ onUnmounted(() => {
     }
   }
   &.is-cta {
+      position: relative;
+      z-index: 2;
       flex: 1;
       padding: 0.125em;
     & h2 {

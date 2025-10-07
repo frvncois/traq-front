@@ -122,12 +122,12 @@ section {
                 &:last-child {
                     flex: 1;
                 }
-                            .is-cover {
+                .is-cover {
                     display: inline;
-                    }
+                }
             }
             > .is-logo {
-                bottom: var(--space-small);
+                bottom: var(--space-xsmall);
                 top: auto;
                 left: auto;
                 right: var(--space-width);
