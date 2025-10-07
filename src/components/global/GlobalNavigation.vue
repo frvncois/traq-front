@@ -105,7 +105,6 @@ nav {
       writing-mode: vertical-rl; 
       transform: rotate(180deg); 
       font-size: 18vw;
-      margin-bottom: 0.25em;
     }
   }
 }
