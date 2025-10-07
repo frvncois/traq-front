@@ -1,16 +1,39 @@
 <script setup>
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ref, onMounted, onUnmounted } from 'vue'
+
+gsap.registerPlugin(ScrollTrigger)
+
 const props = defineProps({
-  home: {
-    type: Object,
-    default: () => null
-  }
+  home: { type: Object, default: () => null }
+})
+
+const introFixed = ref(null)
+let st = null
+
+onMounted(() => {
+  setTimeout(() => {
+    if (!introFixed.value) return
+
+    st = ScrollTrigger.create({
+      trigger: introFixed.value,
+      start: 'top top',
+      end: 'max',
+      pin: true,
+      pinSpacing: false,
+    })
+  }, 500)
+})
+
+onUnmounted(() => {
+  if (st) st.kill()
 })
 </script>
-
 <template>
   <section v-if="home" class="is-white">
     <div class="about is-wrap">
-      <div class="about is-intro">
+      <div ref="introFixed" class="about is-intro">
         <p>{{ home.heroIntro }}</p>
       </div>
     </div>
@@ -18,10 +41,6 @@ const props = defineProps({
 </template>
 
 <style scoped>
-section {
-    position: sticky;
-    top: 0;
-}
 .about {
   &.is-wrap {
     display: flex;

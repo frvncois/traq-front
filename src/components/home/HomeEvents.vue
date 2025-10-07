@@ -1,12 +1,37 @@
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { formatDate } from '@/services/time'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const props = defineProps({
-  events: {
-    type: Array,
-    default: () => []
-  }
+  events: { type: Object, default: () => null }
+})
+
+const ctaFixed = ref(null)
+let st = null
+
+onMounted(() => {
+  setTimeout(() => {
+    const el = ctaFixed.value?.$el || ctaFixed.value?.$refs?.link || ctaFixed.value?.$?.vnode?.el
+    if (!el) return
+
+    st = ScrollTrigger.create({
+      trigger: el,
+      start: 'top top',
+      end: 'max',
+      pin: true,
+      pinSpacing: false,
+    })
+  }, 500)
+})
+
+
+onUnmounted(() => {
+  if (st) st.kill()
 })
 </script>
 
@@ -14,10 +39,10 @@ const props = defineProps({
   <section class="is-white">
     <div class="events is-wrap">
       <h1><RouterLink to="/programmation">Programmation</RouterLink></h1>
-          <RouterLink to="/programmation" class="events is-cta">
-            <span>Découvrir</span>
-            <div class="is-toggle"></div>
-          </RouterLink>
+      <RouterLink to="/programmation" ref="ctaFixed" class="events is-cta">
+        <span>Découvrir</span>
+        <div class="is-toggle"></div>
+      </RouterLink>
 
       <div class="events is-grid">
         <RouterLink
@@ -43,15 +68,16 @@ const props = defineProps({
 
 
 <style scoped>
-  .events {
+.events {
     &.is-wrap {
       position: relative;
-      padding: 0 var(--space-width) var(--space-xl) var(--space-width);
+      padding: 0 var(--space-width) var(--space-width) var(--space-width);
       display: flex;
       flex-direction: column;
       gap: var(--space-small);
       > h1 {
         font-size: var(--font-md);
+        line-height: 0.75;
         &:hover {
           color: var(--is-orange);
         }
@@ -88,38 +114,39 @@ const props = defineProps({
           }
         }
       }
-    > .is-cta {
-      position: absolute;
-      top: 0;
-      right: calc(var(--space-small) * 2.75);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-      overflow: hidden;
-      height: 100%;
-
-      span {
-        text-transform: uppercase;
-        font-family: 'Accent';
-        font-size: var(--font-md);
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
-        max-height: 0px;
+      .is-cta {
+        position: absolute;
+        padding-top: var(--space-small);
+        right: calc(var(--space-small) * 2.75);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
         overflow: hidden;
-        white-space: nowrap;
-        position: relative;
-        padding-bottom: 0;
-        transition: max-height 0.75s cubic-bezier(0.85, 0, 0.15, 1), padding-bottom 0.75s cubic-bezier(0.85, 0, 0.15, 1);
-      }
-      .is-toggle {
-        clip-path: var(--mask);
-        background-color: var(--is-black);
-        width: 1.5em;
-        height: 3em;
-        position: relative;
-        bottom: 0;
+        height: 100%;
+
+        span {
+          text-transform: uppercase;
+          font-family: 'Accent';
+          font-size: var(--font-md);
+          writing-mode: vertical-rl;
+          text-orientation: mixed;
+          max-height: 0px;
+          overflow: hidden;
+          white-space: nowrap;
+          position: relative;
+          padding-bottom: 0;
+          transition: max-height 0.75s cubic-bezier(0.85, 0, 0.15, 1), padding-bottom 0.75s cubic-bezier(0.85, 0, 0.15, 1);
         }
+
+        .is-toggle {
+          clip-path: var(--mask);
+          background-color: var(--is-black);
+          width: 1.5em;
+          height: 3em;
+          position: relative;
+          bottom: 0;
+          }
       }
     }
     &:hover .is-cta span {
@@ -127,7 +154,6 @@ const props = defineProps({
     padding-bottom: var(--space-xs);
   }
 }
-
 @media (max-width: 768px) {
   .events {
     &.is-wrap {
@@ -135,16 +161,19 @@ const props = defineProps({
       > .is-grid {
         display: flex;
         flex-direction: column;
+        gap: var(--space-small);
         > .is-content {
           flex-direction: column;
           gap: 0;
         }
       }
-      > .is-cta {
-        right: 0.25em;
+      .is-cta {
+        padding-top: 0.35em;
+        top: -0.35em;
+        right: 0.425em;
         .is-toggle {
-          width: 1em;
-          height: 2em;
+          width: 0.9em;
+          height: 1.75em;
         }
       }
     }

@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, onBeforeUnmount, ref, computed } from "vue"
+import { onMounted, onUnmounted, ref } from "vue"
 import { formatDate, formatTime } from "@/services/time"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -13,76 +13,49 @@ const props = defineProps({
   },
 })
 
-const titleElement = ref(null)
-const ticketElement = ref(null)
-const subtitleElement = ref(null)
-const sectionElement = ref(null)
-const ctaElement = ref(null)
-
-const parsedLinks = computed(() => {
-  if (!props.event?.eventLinks) return ""
-  return props.event.eventLinks
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-    .replace(/\n/g, "<br>")
-})
-
-let ctx = null
+const titleFixed = ref(null)
+const subtitleFixed = ref(null)
+const ticketFixed = ref(null)
+let st = null
+let stSubtitle = null
+let stTicket = null
 
 onMounted(() => {
   setTimeout(() => {
-    if (!titleElement.value || !ticketElement.value || !subtitleElement.value || !sectionElement.value || !ctaElement.value) {
-      return
-    }
+    if (!titleFixed.value || !subtitleFixed.value) return
+    const titleHeight = titleFixed.value.offsetHeight
 
-    ctx = gsap.context(() => {
-      const titleHeight = titleElement.value.offsetHeight
-
-      // Pin animations for title and subtitle on all screens
-      ScrollTrigger.create({
-        trigger: titleElement.value,
-        start: "top top",
-        endTrigger: sectionElement.value,
-        end: "bottom top",
-        pin: true,
-        pinSpacing: false,
-      })
-
-      ScrollTrigger.create({
-        trigger: subtitleElement.value,
-        start: "top-=" + titleHeight + " top",
-        endTrigger: sectionElement.value,
-        end: "bottom top",
-        pin: true,
-        pinSpacing: false,
-      })
-
-      if (window.innerWidth >= 768) {
-        ScrollTrigger.create({
-          trigger: ticketElement.value,
-          start: "top top",
-          endTrigger: sectionElement.value,
-          end: "bottom top",
-          pin: true,
-          pinSpacing: false,
-        })
-
-        ScrollTrigger.create({
-          trigger: ctaElement.value,
-          start: "top top",
-          endTrigger: sectionElement.value,
-          end: "bottom top",
-          pin: true,
-          pinSpacing: false,
-        })
-      }
+    st = ScrollTrigger.create({
+      trigger: titleFixed.value,
+      start: 'top top',
+      end: 'max',
+      pin: true,
+      pinSpacing: false,
     })
-  }, 300)
+
+    stSubtitle = ScrollTrigger.create({
+      trigger: subtitleFixed.value,
+      start: `top ${titleHeight}px`,
+      end: 'max',
+      pin: true,
+      pinSpacing: false,
+    })
+
+    stTicket = ScrollTrigger.create({
+      trigger: ticketFixed.value,
+      start: 'top top',
+      end: 'max',
+      pin: true,
+      pinSpacing: false,
+    })
+  }, 500)
 })
 
-onBeforeUnmount(() => {
-  if (ctx) {
-    ctx.revert()
-  }
+
+onUnmounted(() => {
+  if (st) st.kill()
+  if (stSubtitle) stSubtitle.kill()
+  if (stTicket) stTicket.kill()
 })
 </script>
 
@@ -92,7 +65,7 @@ onBeforeUnmount(() => {
     <div class="event is-wrap">
 
       <div class="event is-content">
-        <div ref="titleElement" class="event is-title">
+        <div ref="titleFixed" class="event is-title">
           <h1>{{ event.eventTitle }}</h1>
           <h2>{{ formatDate(event.eventDate) }}</h2>
           <h2>{{ formatTime(event.eventDate) }}</h2>
@@ -106,14 +79,14 @@ onBeforeUnmount(() => {
       </div>
 
       <div class="event is-content">
-        <div ref="ticketElement" class="event is-ticket">
+        <div ref="ticketFixed" class="event is-ticket">
           <h1>Billeterie</h1>
         </div>
         <div class="event is-cover"></div>
       </div>
 
       <div class="event is-content">
-        <div ref="subtitleElement" class="event is-subtitle">
+        <div ref="subtitleFixed" class="event is-subtitle">
             <h2>{{ event.eventSubtitle }}</h2>
         </div>
           <ul class="event is-details">
@@ -160,15 +133,16 @@ onBeforeUnmount(() => {
       display: flex;
       flex-direction: column;
       position: relative;
-      padding-top: var(--space-small);
       & .is-title {
         background-color: var(--is-orange);
         z-index: 10;
         position: relative;
+        padding-top: var(--space-xs);
       }
       & .is-subtitle {
         width: 100%;
         background-color: var(--is-orange);
+        padding-top: var(--space-xs);
         z-index: 10;
         > h2 {
         font-size: var(--font-lg);
@@ -182,7 +156,6 @@ onBeforeUnmount(() => {
         clip-path: var(--mask);
         aspect-ratio: 9 / 16;
         flex-shrink: 0;
-        margin-top: var(--space-small);
         margin-bottom: var(--space-small);
       }
       & .is-details {
@@ -196,6 +169,10 @@ onBeforeUnmount(() => {
       & .is-ticket {
         z-index: 3;
         background-color: var(--is-orange);
+        padding: var(--space-xs) 0;
+        > h1 {
+          margin-left: -0.05em;
+        }
       }
       & h1, h2 {
         z-index: 2;
@@ -214,42 +191,42 @@ onBeforeUnmount(() => {
       flex-direction: column;
       justify-content: space-between;
     }
-    &.is-mobile {
-      display: none;
-    }
   }
+
   &.is-cta {
-        position: absolute;
-        z-index: 9;
-        top: 0;
-        right: calc(var(--space-small) * 2.75);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        cursor: pointer;
-        overflow: hidden;
-        height: 100%;
-          span {
-            padding-top: var(--space-small);
-            font-family: 'Accent';
-            text-transform: uppercase;
-            font-size: var(--font-md);
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            overflow: hidden;
-            white-space: nowrap;
-            position: relative;
-            padding-bottom: 0;
-          }
-      .is-toggle {
-        clip-path: var(--mask);
-        background-color: var(--is-black);
-        width: 1.5em;
-        height: 3em;
-        position: relative;
-        bottom: 0;
-        margin-top: var(--space-xs);
-      }
+    position: absolute;
+    padding-top: var(--space-small);
+    right: calc(var(--space-small) * 2.75);
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    overflow: hidden;
+    height: 100%;
+    gap: var(--space-small);
+
+    span {
+      text-transform: uppercase;
+      font-family: 'Accent';
+      font-size: var(--font-md);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      padding-bottom: 0;
+      transition: max-height 0.75s cubic-bezier(0.85, 0, 0.15, 1), padding-bottom 0.75s cubic-bezier(0.85, 0, 0.15, 1);
+    }
+
+    .is-toggle {
+      clip-path: var(--mask);
+      background-color: var(--is-black);
+      width: 1.5em;
+      height: 3em;
+      position: relative;
+      bottom: 0;
+    }
   }
 }
 
@@ -258,18 +235,21 @@ onBeforeUnmount(() => {
     &.is-wrap {
         display: flex;
         flex-direction: column;
-
-      > .is-content {
-        gap: var(--space-width);
-              & .is-details {
+        > .is-content {
+          gap: var(--space-width);
+            & .is-details {
               margin-left: 0%;
             }
-      }
-    }
+            & .is-about {
+              padding-bottom: var(--space-width);
+            }
+        }
+
+        }
         &.is-cta {
         right: 0.25em;
           span {
-            padding-top: var(--space-small);
+            padding-top: 0;
             font-family: 'Accent';
             text-transform: uppercase;
             font-size: var(--font-md);

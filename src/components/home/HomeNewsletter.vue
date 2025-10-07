@@ -1,7 +1,88 @@
+<script setup>
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ref, onMounted, onUnmounted } from 'vue'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const props = defineProps({
+  home: { type: Object, default: () => null }
+})
+
+const elementsFixed= ref(null)
+const elementsFixed2= ref(null)
+const ctaFixed= ref(null)
+const titleFixed= ref(null)
+
+let st = null
+let st2 = null
+let stCta = null
+let stTitle = null
+
+onMounted(() => {
+  setTimeout(() => {
+    if (!elementsFixed.value) return
+
+    st = ScrollTrigger.create({
+      trigger: elementsFixed.value,
+      start: 'top top',
+      end: 'max',
+      pin: true,
+      pinSpacing: false,
+    })
+  }, 500)
+
+  setTimeout(() => {
+    if (!elementsFixed2.value) return
+
+    st2 = ScrollTrigger.create({
+      trigger: elementsFixed2.value,
+      start: 'top top',
+      end: 'max',
+      pin: true,
+      pinSpacing: false,
+    })
+  }, 500)
+
+  setTimeout(() => {
+    if (!ctaFixed.value) return
+
+    stCta = ScrollTrigger.create({
+      trigger: ctaFixed.value,
+      start: 'top top',
+      end: 'max',
+      pin: true,
+      pinSpacing: false,
+    })
+  }, 500)
+
+  setTimeout(() => {
+    if (!titleFixed.value) return
+
+    stTitle = ScrollTrigger.create({
+      trigger: titleFixed.value,
+      start: 'top top',
+      end: 'max',
+      pin: true,
+      pinSpacing: false,
+    })
+  }, 500)
+
+})
+
+onUnmounted(() => {
+  if (st) st.kill()
+  if (st2) st2.kill()
+  if (stCta) stCta.kill()
+  if (stTitle) stTitle.kill()
+})
+</script>
+
+
 <template>
 <section class="is-white is-stack">
   <div class="newsletter is-wrap">
-    <div class="newsletter is-intro">
+    <div ref="titleFixed" class="newsletter is-intro">
       <h1>Diffuseur des arts de la scène</h1>
     </div>
   </div>
@@ -10,13 +91,13 @@
 <section class="is-orange">
   <div class="newsletter is-content">
     <div class="newsletter is-elements">
-      <img src="@/assets/FooterElement.svg"/>
-      <img src="@/assets/FooterN.svg"/>
+      <img ref="elementsFixed" src="@/assets/FooterElement.svg"/>
+      <img ref="elementsFixed2" src="@/assets/FooterN.svg"/>
       <img src="@/assets/FooterA.svg" />
       <img src="@/assets/FooterR.svg" />
       <img src="@/assets/FooterT.svg" />
     </div>
-    <div class="newsletter is-cta">
+    <div ref="ctaFixed" class="newsletter is-cta">
       <h2>Abonnez-vous à notre infolettre</h2>
     </div>
   </div>
@@ -24,11 +105,6 @@
 </template>
 
 <style scoped>
-.is-stack {
-  position: sticky;
-  top:0;
-}
-
 .newsletter {
     &.is-wrap {
     position: relative;
@@ -57,33 +133,29 @@
     display: flex;
     gap: var(--space-base);
     flex-direction: column;
-    padding-top: var(--space-base);
     > img {
       aspect-ratio: 1;
       z-index: 2;
       position: relative;
       width: 100%;
       &:first-child {
-        position: sticky;
-        top: var(--space-base);
+        position: relative;
         z-index: 3;
+        padding-top: var(--space-small);
       }
       &:nth-child(2) {
-        position: sticky;
-        top: var(--space-base);
-        margin-top: calc(-100% - var(--space-base));
+        position: relative;
+        margin-top: calc(-100% - 1.5em);
+        padding-top: var(--space-small);
       }
     }
   }
   &.is-cta {
-    flex: 1;
-      position: sticky;
-      top: var(--space-base);
-      margin-top: var(--space-base);
-    
+      flex: 1;
+      padding: 0.125em;
     & h2 {
       font-size: var(--font-lg);
-      margin-top: -0.125em;
+      line-height: 0.85;
     }
   }
 }
@@ -101,11 +173,18 @@
   }
   &.is-content {
     flex-direction: column;
+    gap: var(--space-small);
   }
   &.is-elements {
     > img {
       max-width: 100%;
       height: 100%;
+      &:first-child {
+        padding-top: var(--space-small);
+      }
+      &:nth-child(2) {
+        margin-top: calc(-100% - 0.75em);
+      }
     }
   }
 }

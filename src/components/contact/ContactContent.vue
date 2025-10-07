@@ -52,6 +52,7 @@ section {
     gap: var(--space-base);
     background: var(--is-fushia);
     font-family: 'Accent';
+    will-change: transform;
     > .is-content {
         display: flex;
         gap: var(--space-width);
@@ -97,17 +98,33 @@ section {
   }
 }
 
+@media (max-width: 1400px) {
+    .contact {
+        &.is-wrap {
+            .is-content {
+            .is-cover {
+                    display: none;
+                    }
+                }
+            }
+        }
+}
+
 @media (max-width: 768px) {
     .contact {
         &.is-wrap {
-            padding: var(--space-small) var(--space-width);
+            padding: 0.35em var(--space-width);
             flex-direction: column-reverse;
             > .is-content {
                 flex-direction: column;
                 font-size: var(--font-rg);
+                gap: var(--space-md);
                 &:last-child {
                     flex: 1;
                 }
+                            .is-cover {
+                    display: inline;
+                    }
             }
             > .is-logo {
                 bottom: var(--space-small);
@@ -115,7 +132,7 @@ section {
                 left: auto;
                 right: var(--space-width);
                 & svg {
-                    height: 4.35em;
+                    height: 3.85em;
                     width: auto;
                 }
             }

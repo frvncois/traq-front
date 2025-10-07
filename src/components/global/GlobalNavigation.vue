@@ -1,29 +1,58 @@
 <script setup>
 import { RouterLink, useRoute } from 'vue-router'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const emit = defineEmits(['close'])
-const isAnimated = ref(false)
 const isClosing = ref(false)
+const navElement = ref(null)
+const transitionElement = ref(null)
 
 const route = useRoute()
 
 onMounted(() => {
-  setTimeout(() => {
-    isAnimated.value = true
-  }, 10)
+  if (transitionElement.value) {
+    const scrollY = window.lenis ? window.lenis.scroll : window.scrollY
+    gsap.set(transitionElement.value, {
+      position: 'absolute',
+      top: scrollY,
+      left: 0,
+      clipPath: 'inset(0 0 100% 0)',
+    })
+
+    gsap.to(transitionElement.value, {
+      clipPath: 'inset(0 0 0% 0)',
+      duration: 1,
+      ease: 'power4.inOut',
+    })
+  }
+})
+
+onUnmounted(() => {
 })
 
 const handleClose = () => {
   isClosing.value = true
-  isAnimated.value = false
 
-  setTimeout(() => {
-    emit('close')
-  }, 750)
+  if (transitionElement.value) {
+    gsap.to(transitionElement.value, {
+      clipPath: 'inset(0 0 100% 0)',
+      duration: 0.75,
+      ease: 'power4.inOut',
+      onComplete: () => {
+        emit('close')
+      }
+    })
+  } else {
+    setTimeout(() => {
+      emit('close')
+    }, 750)
+  }
 }
 
-// Navigation items
 const navItems = [
   { name: 'home', label: 'Accueil', path: '/' },
   { name: 'programmation', label: 'Programmation', path: '/programmation' },
@@ -32,7 +61,6 @@ const navItems = [
   { name: 'contact', label: 'Contact', path: '/contact' }
 ]
 
-// Filter out current route
 const filteredNav = computed(() =>
   navItems.filter(item => item.name !== route.name)
 )
@@ -42,10 +70,10 @@ defineExpose({ handleClose })
 
 <template>
   <div
+    ref="transitionElement"
     class="transition"
-    :class="{ 'is-open': isAnimated, 'is-closing': isClosing }"
   >
-    <nav>
+    <nav ref="navElement">
       <div class="is-items">
         <RouterLink
           v-for="item in filteredNav"
@@ -63,15 +91,18 @@ defineExpose({ handleClose })
 
 <style scoped>
 nav {
-  position: fixed;
+  position: absolute;
   inset: 0;
+  width: 100vw;
+  height: 100vh;
   background-color: var(--is-fushia);
   z-index: 9;
   display: flex;
   align-items: flex-end;
   padding: var(--space-small) var(--space-width);
   font-family: 'Accent';
-  
+  box-sizing: border-box;
+
   > .is-items {
     display: flex;
     flex-direction: column;
@@ -85,22 +116,19 @@ nav {
 }
 
 .transition {
-  position: fixed;
+  position: absolute;
+  top: 0;
+  left: 0;
   z-index: 9;
   width: 100vw;
   height: 100vh;
-  clip-path: inset(0 0 100% 0);
-  transition: clip-path 1s cubic-bezier(0.85, 0, 0.15, 1);
-  
-  &.is-open {
-    clip-path: inset(0 0 0% 0);
-  }
 }
 
 @media (max-width: 768px) {
   nav {
     display: flex;
     justify-content: center;
+    padding: var(--space-small);
     > .is-items {
       writing-mode: vertical-rl; 
       transform: rotate(180deg); 

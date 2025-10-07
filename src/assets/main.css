@@ -23,12 +23,13 @@
  
 @media (max-width: 768px) {
   :root {
-    --space-base: 0.5em;
-    --space-width: 1.5em;
+    --space-base: 0.25em;
+    --space-md: 1em;
+    --space-width: 1.75em;
     --space-large: 4em;
     --font-big: 9vw;
-    --font-lg: 2em;
-    --font-md: 1.15em;
+    --font-lg: 1.75em;
+    --font-md: 1em;
     --font-rg: 0.75em;
   }
 }

@@ -1,16 +1,46 @@
 <script setup>
-import LogoMain from '@/assets/LogoMain.vue';
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import LogoMain from '@/assets/LogoMain.vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const props = defineProps({
+  home: { type: Object, default: () => null }
+})
+
+const heroFixed = ref(null)
+let st = null
+
+onMounted(() => {
+  setTimeout(() => {
+    if (!heroFixed.value) return
+
+    st = ScrollTrigger.create({
+      trigger: heroFixed.value,
+      start: 'top top',
+      end: 'max',
+      pin: true,
+      pinSpacing: false,
+    })
+  }, 500)
+})
+
+onUnmounted(() => {
+  if (st) st.kill()
+})
 </script>
 
 <template>
   <section class="is-orange">
     <div class="hero is-wrap">
-      <div class="cover is-logo">
+      <div class="hero is-logo">
         <router-link to="/">
           <LogoMain />
         </router-link>
       </div>
-      <div class="hero is-content">
+      <div ref="heroFixed" class="hero is-content">
         <h1>Programmation</h1>
         <h2>2025 - 2026</h2>
       </div>
@@ -27,7 +57,7 @@ import LogoMain from '@/assets/LogoMain.vue';
     flex-direction: column;
     justify-content: flex-end;
   }
-  > .is-content {
+  .is-content {
     display: flex;
     padding: var(--space-small) var(--space-width);
     align-items: flex-end;
@@ -48,13 +78,19 @@ import LogoMain from '@/assets/LogoMain.vue';
 }
 
 @media screen and (max-width: 768px) {
+  h2 {
+    display: none;
+  }
   .hero {
-    > .is-logo svg {
-      height: 6em;
-      width: auto;
+    &.is-wrap {
+      height: 80vh;
     }
-    > h2 {
-      display: none;
+    &.is-logo {
+      top: 0.4em;
+        svg {
+        height: auto;
+        width: 6em;
+      }
     }
   }
 }

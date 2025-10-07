@@ -1,51 +1,47 @@
 <script setup>
-import { onMounted, onBeforeUnmount, ref } from 'vue'
-import { RouterLink } from 'vue-router'
-import { formatDate } from '@/services/time'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { RouterLink } from 'vue-router'
+import { formatDate } from '@/services/time'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const props = defineProps({
-  events: {
+  events: { 
     type: Array,
     default: () => []
   }
 })
 
-const gridElement = ref(null)
-const sectionElement = ref(null)
-let ctx = null
+const sectionFixed = ref(null)
+let st = null
 
 onMounted(() => {
   setTimeout(() => {
-    if (!gridElement.value || !sectionElement.value) return
-    if (window.innerWidth <= 768) return
+    if (!sectionFixed.value) return
 
-    ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: sectionElement.value,
-        start: "bottom bottom",
-        end: "max",
-        pin: gridElement.value,
-        pinSpacing: false,
-      })
+    st = ScrollTrigger.create({
+      trigger: sectionFixed.value,
+      start: 'bottom bottom',
+      endTrigger: 'body',
+      end: 'bottom bottom',
+      pin: true,
+      pinSpacing: false,
+      pinnedContainer: sectionFixed.value,
     })
-  }, 300)
+  }, 500)
 })
 
-onBeforeUnmount(() => {
-  if (ctx) {
-    ctx.revert()
-  }
+onUnmounted(() => {
+  if (st) st.kill()
 })
 </script>
 
 
 <template>
-  <section ref="sectionElement" class="is-white">
-    <div ref="gridElement" class="events is-grid">
+  <section class="is-white">
+    <div ref="sectionFixed" class="events is-grid">
       <RouterLink
         v-for="event in events"
         :key="event.documentId"
@@ -97,7 +93,7 @@ onBeforeUnmount(() => {
             width: 100%;
             position: absolute;
             z-index: 2;
-            bottom: 0;
+            bottom: -1px;
             aspect-ratio: 1;
             clip-path: var(--cover);
           }
@@ -106,6 +102,7 @@ onBeforeUnmount(() => {
           height: 100%;
           width: 100%;
           object-fit: cover;
+          z-index: 1;
         }
       }
       > .is-details {
@@ -137,6 +134,7 @@ onBeforeUnmount(() => {
     display: flex;
     flex-direction: column;
     gap: var(--space-small);
+    padding-top: var(--space-small);
     padding-bottom: var(--space-large);
     > .is-item {
       > .is-header {
@@ -147,6 +145,7 @@ onBeforeUnmount(() => {
       .is-cover {
         min-height: 20em;
         aspect-ratio: unset;
+        margin-bottom: 2px;
       }
     }
   }

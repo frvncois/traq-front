@@ -6,8 +6,12 @@ import GlobalTransition from './components/global/GlobalTransition.vue'
 </script>
 
 <template>
-  <GlobalHeader />
-  <RouterView />
-  <GlobalFooter />
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
+      <GlobalHeader />
+      <RouterView />
+      <GlobalFooter />
+    </div>
+  </div>
   <GlobalTransition />
 </template>

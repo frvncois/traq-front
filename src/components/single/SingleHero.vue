@@ -1,13 +1,35 @@
 <script setup>
-import LogoMain from '@/assets/LogoMain.vue';
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import LogoMain from '@/assets/LogoMain.vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const props = defineProps({
-  event: {
-    type: Object,
-    default: () => null
-  }
+  event: { type: Object, default: () => null }
 })
 
+const heroFixed = ref(null)
+let st = null
+
+onMounted(() => {
+  setTimeout(() => {
+    if (!heroFixed.value) return
+
+    st = ScrollTrigger.create({
+      trigger: heroFixed.value,
+      start: 'top top',
+      end: 'max',
+      pin: true,
+      pinSpacing: false,
+    })
+  }, 500)
+})
+
+onUnmounted(() => {
+  if (st) st.kill()
+})
 </script>
 
 <template>
@@ -16,7 +38,7 @@ const props = defineProps({
       <div class="hero is-logo">
         <RouterLink to="/"><LogoMain /></RouterLink>
       </div>
-      <div class="hero is-content">
+      <div ref="heroFixed" class="hero is-content">
         <img
           :src="`${event.eventCover?.url}`"
           :alt="event.eventTitle"
@@ -29,24 +51,27 @@ const props = defineProps({
 <style scoped>
 .hero {
   &.is-wrap {
-    height: 80vh;
-    background: var(--is-orange);
-    color: var(--is-black);
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    position: relative;
-    clip-path: border-box;
+    height: 90vh;
+    overflow: hidden;
+    align-items: flex-end;
   }
-  > .is-content {
-    display: flex;
+  .is-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+    height: 90vh;
     > img {
-      position: fixed;
-      top:0;
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      inset: 0;
       width: 100vw;
-      height: 100vh;
+      min-height: 100vh;
       object-fit: cover;
-      z-index: 0;
     }
   }
   > .is-logo {
@@ -60,9 +85,18 @@ const props = defineProps({
 
 @media screen and (max-width: 768px) {
   .hero {
-    &.is-logo svg {
-      height: 6em;
-      width: auto;
+    &.is-wrap {
+      height: 80vh;
+    }
+    &.is-content {
+      height: 80vh;
+    }
+    &.is-logo {
+      top: 0.4em;
+        svg {
+        height: auto;
+        width: 6em;
+      }
     }
   }
 }

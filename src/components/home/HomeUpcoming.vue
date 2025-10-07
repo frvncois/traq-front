@@ -2,12 +2,11 @@
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { formatDate, formatTime } from '@/services/time'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const props = defineProps({
-  events: {
-    type: Array,
-    default: () => []
-  }
+  events: { type: Object, default: () => null }
 })
 
 const nextEvent = computed(() => {
@@ -19,16 +18,39 @@ const nextEvent = computed(() => {
     .sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate))[0] 
     || props.events[0]
 })
+
+const ctaFixed = ref(null)
+let st = null
+
+onMounted(() => {
+  setTimeout(() => {
+    const el = ctaFixed.value?.$el || ctaFixed.value?.$refs?.link || ctaFixed.value?.$?.vnode?.el
+    if (!el) return
+
+    st = ScrollTrigger.create({
+      trigger: el,
+      start: 'top top',
+      end: 'max',
+      pin: true,
+      pinSpacing: false,
+    })
+  }, 500)
+})
+
+
+onUnmounted(() => {
+  if (st) st.kill()
+})
 </script>
 
 <template>
   <section class="is-white" v-if="nextEvent">
     <div class="event is-wrap">
       <RouterLink to="/programmation"><h1>Prochain Événement</h1></RouterLink>
-        <RouterLink to="/programmation" class="events is-cta">
-          <span>Découvrir</span>
-          <div class="is-toggle"></div>
-        </RouterLink>
+      <RouterLink to="/programmation" ref="ctaFixed" class="events is-cta">
+        <span>Découvrir</span>
+        <div class="is-toggle"></div>
+      </RouterLink>
       <RouterLink :to="`/events/${nextEvent.documentId}`" class="event is-next">
         <div class="event is-cover">
           <img
@@ -102,9 +124,9 @@ const nextEvent = computed(() => {
         color: var(--is-orange);
       }
     }
-    > .is-cta {
+    .is-cta {
       position: absolute;
-      top: 0;
+      padding-top: var(--space-small);
       right: calc(var(--space-small) * 2.75);
       display: flex;
       flex-direction: column;
@@ -126,6 +148,7 @@ const nextEvent = computed(() => {
         padding-bottom: 0;
         transition: max-height 0.75s cubic-bezier(0.85, 0, 0.15, 1), padding-bottom 0.75s cubic-bezier(0.85, 0, 0.15, 1);
       }
+
       .is-toggle {
         clip-path: var(--mask);
         background-color: var(--is-black);
@@ -134,8 +157,8 @@ const nextEvent = computed(() => {
         position: relative;
         bottom: 0;
         }
-      }
     }
+  }
     &:hover .is-cta span {
     max-height: 500px;
     padding-bottom: var(--space-xs);
@@ -151,15 +174,16 @@ const nextEvent = computed(() => {
           gap: 0;
         }
       }
-      > .is-cta {
-        right: 0.25em;
+      .is-cta {
+        padding-top: 0.35em;
+        top: -0.35em;
+        right: 0.425em;
         .is-toggle {
-          width: 1em;
-          height: 2em;
+          width: 0.9em;
+          height: 1.75em;
         }
       }
     }
   }
 }
-
 </style>

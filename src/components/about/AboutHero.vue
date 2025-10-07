@@ -1,5 +1,35 @@
 <script setup>
-import LogoMain from '@/assets/LogoMain.vue';
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import LogoMain from '@/assets/LogoMain.vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const props = defineProps({
+  home: { type: Object, default: () => null }
+})
+
+const heroFixed = ref(null)
+let st = null
+
+onMounted(() => {
+  setTimeout(() => {
+    if (!heroFixed.value) return
+
+    st = ScrollTrigger.create({
+      trigger: heroFixed.value,
+      start: 'top top',
+      end: 'max',
+      pin: true,
+      pinSpacing: false,
+    })
+  }, 500)
+})
+
+onUnmounted(() => {
+  if (st) st.kill()
+})
 </script>
 
 <template>
@@ -10,7 +40,7 @@ import LogoMain from '@/assets/LogoMain.vue';
           <LogoMain />
         </RouterLink>
       </div>
-      <div class="hero is-content">
+      <div ref="heroFixed" class="hero is-content">
         <h1>À Propos</h1>
       </div>
     </div>
@@ -25,26 +55,41 @@ import LogoMain from '@/assets/LogoMain.vue';
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    > .is-content {
-      display: flex;
-      padding: var(--space-small) var(--space-width);
-      > h1 {
-        font-size: var(--font-big);
-      }
+  }
+  .is-content {
+    display: flex;
+    padding: var(--space-small) var(--space-width);
+    align-items: flex-end;
+    justify-content: space-between;
+    > h1 {
+      font-size: var(--font-big);
     }
-    > .is-logo {
-      position: absolute;
-      top: var(--space-small);
-      left: var(--space-width);
+    > h2 {
+      font-size: var(--font-big);
+      font-family: 'body';
     }
+  }
+  > .is-logo {
+    position: absolute;
+    top: var(--space-small);
+    left: var(--space-width);
   }
 }
 
 @media screen and (max-width: 768px) {
+  h2 {
+    display: none;
+  }
   .hero {
-    &.is-logo svg {
-      height: 6em;
-      width: auto;
+    &.is-wrap {
+      height: 80vh;
+    }
+    &.is-logo {
+      top: 0.4em;
+        svg {
+        height: auto;
+        width: 6em;
+      }
     }
   }
 }

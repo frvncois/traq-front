@@ -1,52 +1,62 @@
 <script setup>
-import { onMounted, onBeforeUnmount, ref } from 'vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const props = defineProps({
-  about: {
-    type: Object,
-    default: () => null
+  about: { 
+    type: Array,
+    default: () => []
   }
 })
 
-const gridElement = ref(null)
-const sectionElement = ref(null)
-let ctx = null
+const sectionFixed = ref(null)
+const introFixed = ref(null)
+
+let st = null
+let stIntro = null
 
 onMounted(() => {
   setTimeout(() => {
-    if (!gridElement.value || !sectionElement.value) return
+    if (!introFixed.value) return
 
-    ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: gridElement.value,
-        start: "bottom bottom",
-        end: "max",
-        pin: true,
-        pinSpacing: false,
-      })
+    stIntro = ScrollTrigger.create({
+      trigger: introFixed.value,
+      start: 'top top',
+      end: 'max',
+      pin: true,
+      pinSpacing: false,
     })
-  }, 300)
+
+    if (!sectionFixed.value) return
+
+    st = ScrollTrigger.create({
+      trigger: sectionFixed.value,
+      start: 'bottom bottom',
+      endTrigger: 'body',
+      end: 'bottom bottom',
+      pin: true,
+      pinSpacing: false,
+    })
+  }, 500)
 })
 
-onBeforeUnmount(() => {
-  if (ctx) {
-    ctx.revert()
-  }
+onUnmounted(() => {
+  if (st) st.kill()
+  if (stIntro) stIntro.kill()
 })
 </script>
 
 
 <template>
-  <section class="is-white" v-if="about" ref="sectionElement">
-    <div class="about is-wrap" ref="gridElement">
-      <div class="about is-content is-sticky">
+  <section class="is-white" v-if="about">
+    <div class="about is-wrap">
+      <div ref="introFixed" class="about is-content">
         <p v-html="about.aboutIntro"></p>
       </div>
-      <div class="about is-content">
+      <div ref="sectionFixed" class="about is-content">
         <div class="about is-item"></div>
         <div class="about is-item">
           <p v-html="about.aboutContent"></p>
@@ -62,7 +72,7 @@ onBeforeUnmount(() => {
             </li>
           </ul>
           <h2>Mission</h2>
-          <ul v-if="about.aboutMission">
+          <ul class="is-num" v-if="about.aboutMission">
             <li v-for="(artist, i) in about.aboutMission.split('\n')" :key="i">
               {{ artist }}
             </li>
@@ -86,18 +96,13 @@ onBeforeUnmount(() => {
     display: flex;
     flex-direction: column;
   }
-  > .is-content {
+  .is-content {
     display: flex;
     padding: var(--space-small) var(--space-width);
     gap: var(--space-large);
     position: relative;
     z-index: 2;
     background-color: var(--is-white);
-    &.is-sticky {
-      position: sticky;
-      top:0;
-      z-index: 1;
-    }
   }
   > .is-item {
     flex: 1;
@@ -143,12 +148,23 @@ column-count: 2;
   &:last-child {
     display: flex;
     flex-direction: column;
-    margin-bottom: var(--space-width);
+    margin-bottom: var(--space-large);
   }
   &:nth-child(6) {
     display: flex;
     flex-direction: column;
     gap: var(--space-base);
+  }
+  &.is-num {
+    list-style-type: decimal !important;
+    list-style: decimal !important;
+    padding-left: var(--space-base);
+
+    li {
+      list-style-type: decimal !important;
+      list-style: decimal !important;
+      padding-left: var(--space-small);
+    }
   }
 }
 
@@ -163,13 +179,35 @@ li:empty {
       gap: var(--space-base);
       padding-bottom: var(--space-width);
     }
+    > .is-item {
+      gap: var(--space-md);
+    }
+
+  }
+  ul {
+  column-count: 1;
+    &:last-child {
+      display: flex;
+      flex-direction: column;
+    }
+    &:nth-child(6) {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-base);
+    }
+    &.is-num {
+      list-style-type: decimal !important;
+      list-style: decimal !important;
+      padding-left: 1.15em;
+
+      li {
+        list-style-type: decimal !important;
+        list-style: decimal !important;
+        padding-left: var(--space-small);
+      }
+    }
   }
 }
 
-ul {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding-bottom: var(--space-width);
-}
+
 </style>

@@ -2,30 +2,27 @@
 import { RouterLink } from 'vue-router'
 import { formatDate } from '@/services/time'
 
+
 const props = defineProps({
-  event: {
-    type: Object,
-    default: null
-  },
-  events: {
-    type: Array,
-    default: () => []
-  }
+  events: { type: Object, default: () => null }
 })
+
+
 </script>
 
 <template>
   <section class="is-white">
     <div class="events is-wrap">
       <h1><RouterLink to="/programmation">Programmation</RouterLink></h1>
-          <RouterLink to="/programmation" class="events is-cta">
-            <span>Découvrir</span>
-            <div class="is-toggle"></div>
-          </RouterLink>
+      <RouterLink to="/programmation" class="events is-cta">
+        <span>Découvrir</span>
+        <div class="is-toggle"></div>
+      </RouterLink>
 
       <div class="events is-grid">
         <RouterLink
-          v-if="event"
+          v-for="event in events.slice(0, 2)"
+          :key="event.documentId"
           :to="`/events/${event.documentId}`"
           class="is-item">
           <div class="is-cover">
@@ -39,22 +36,6 @@ const props = defineProps({
             <h2>{{ formatDate(event.eventDate) }}</h2>
           </div>
         </RouterLink>
-        <RouterLink
-          v-for="otherEvent in events.slice(0, event ? 1 : 2)"
-          :key="otherEvent.documentId"
-          :to="`/events/${otherEvent.documentId}`"
-          class="is-item">
-          <div class="is-cover">
-            <img
-              :src="`${otherEvent.eventCover?.url}`"
-              :alt="otherEvent.eventTitle"
-            />
-          </div>
-          <div class="is-content">
-            <h1>{{ otherEvent.eventTitle }}</h1>
-            <h2>{{ formatDate(otherEvent.eventDate) }}</h2>
-          </div>
-        </RouterLink>
       </div>
     </div>
   </section>
@@ -62,15 +43,16 @@ const props = defineProps({
 
 
 <style scoped>
-  .events {
+.events {
     &.is-wrap {
       position: relative;
-      padding: var(--space-small) var(--space-width) var(--space-small) var(--space-width);
+      padding: var(--space-small) var(--space-width) var(--space-width) var(--space-width);
       display: flex;
       flex-direction: column;
       gap: var(--space-small);
       > h1 {
         font-size: var(--font-md);
+        line-height: 0.75;
         &:hover {
           color: var(--is-orange);
         }
@@ -107,38 +89,38 @@ const props = defineProps({
           }
         }
       }
-    > .is-cta {
-      position: absolute;
-      top: var(--space-small);
-      right: calc(var(--space-small) * 2.75);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-      overflow: hidden;
-      height: 100%;
-
-      span {
-        text-transform: uppercase;
-        font-family: 'Accent';
-        font-size: var(--font-md);
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
-        max-height: 0px;
+      .is-cta {
+        position: absolute;
+        right: calc(var(--space-small) * 2.75);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
         overflow: hidden;
-        white-space: nowrap;
-        position: relative;
-        padding-bottom: 0;
-        transition: max-height 0.75s cubic-bezier(0.85, 0, 0.15, 1), padding-bottom 0.75s cubic-bezier(0.85, 0, 0.15, 1);
-      }
-      .is-toggle {
-        clip-path: var(--mask);
-        background-color: var(--is-black);
-        width: 1.5em;
-        height: 3em;
-        position: relative;
-        bottom: 0;
+        height: 100%;
+
+        span {
+          text-transform: uppercase;
+          font-family: 'Accent';
+          font-size: var(--font-md);
+          writing-mode: vertical-rl;
+          text-orientation: mixed;
+          max-height: 0px;
+          overflow: hidden;
+          white-space: nowrap;
+          position: relative;
+          padding-bottom: 0;
+          transition: max-height 0.75s cubic-bezier(0.85, 0, 0.15, 1), padding-bottom 0.75s cubic-bezier(0.85, 0, 0.15, 1);
         }
+
+        .is-toggle {
+          clip-path: var(--mask);
+          background-color: var(--is-black);
+          width: 1.5em;
+          height: 3em;
+          position: relative;
+          bottom: 0;
+          }
       }
     }
     &:hover .is-cta span {
@@ -146,24 +128,25 @@ const props = defineProps({
     padding-bottom: var(--space-xs);
   }
 }
-
 @media (max-width: 768px) {
   .events {
     &.is-wrap {
       > .is-grid {
         display: flex;
         flex-direction: column;
-        padding-bottom: var(--space-width);
+        gap: var(--space-small);
         > .is-content {
           flex-direction: column;
           gap: 0;
         }
       }
-      > .is-cta {
-        right: 0.25em;
+      .is-cta {
+        padding-top: 0.75em;
+        top: -0.35em;
+        right: 0.425em;
         .is-toggle {
-          width: 1em;
-          height: 2em;
+          width: 0.9em;
+          height: 1.75em;
         }
       }
     }

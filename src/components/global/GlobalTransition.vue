@@ -5,6 +5,7 @@ import gsap from 'gsap'
 
 const router = useRouter()
 const transitionElement = ref(null)
+const isInitialLoad = ref(true)
 
 onMounted(() => {
   gsap.fromTo(
@@ -13,7 +14,11 @@ onMounted(() => {
     {
       height: '0vh',
       duration: 0.8,
+      delay: 0.5,
       ease: 'power2.inOut',
+      onComplete: () => {
+        isInitialLoad.value = false
+      }
     }
   )
 })
@@ -28,8 +33,10 @@ router.beforeEach((to, from, next) => {
         duration: 0.6,
         ease: 'power2.inOut',
         onComplete: () => {
-          if (window.lenis) {
-            window.lenis.scrollTo(0, { immediate: true })
+          if (window.smoother) {
+            window.smoother.scrollTo(0, false)
+          } else {
+            window.scrollTo(0, 0)
           }
           next()
         }
@@ -41,11 +48,13 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach(() => {
-  gsap.to(transitionElement.value, {
-    height: '0vh',
-    duration: 0.6,
-    ease: 'power2.inOut',
-  })
+  if (!isInitialLoad.value) {
+    gsap.to(transitionElement.value, {
+      height: '0vh',
+      duration: 0.6,
+      ease: 'power2.inOut',
+    })
+  }
 })
 </script>
 
@@ -65,5 +74,6 @@ router.afterEach(() => {
   height: 0vh;
   background-color: var(--is-orange);
   z-index: 8;
+  pointer-events: none;
 }
 </style>

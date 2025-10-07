@@ -86,9 +86,6 @@ footer {
         }
     }
     > .is-logo {
-        position: relative;
-        bottom: var(--space-small);
-        right: var(--space-width);
         display: flex;
         align-items: flex-end;
         justify-content: flex-end;
@@ -106,9 +103,9 @@ footer {
     > .is-wrap {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: var(--space-base);
+            gap: var(--space-small);
             > .is-content {
-                gap: var(--space-base);
+                gap: var(--space-small);
                 > h1 {
                     font-size: var(--font-rg);
                 }

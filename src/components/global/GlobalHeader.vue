@@ -2,10 +2,15 @@
 import GlobalNavigation from '@/components/global/GlobalNavigation.vue'
 import { ref, onMounted, onUnmounted, computed, nextTick, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const showNav = ref(false)
 const headerColor = ref('var(--is-orange)')
 const globalNavRef = ref(null)
+const headerElement = ref(null)
 
 const route = useRoute()
 
@@ -14,13 +19,24 @@ const computedHeaderColor = computed(() =>
 )
 
 const toggleNav = () => {
-  if (!showNav.value) showNav.value = true
-  else if (globalNavRef.value) globalNavRef.value.handleClose()
+  if (!showNav.value) {
+    if (window.smoother) {
+      window.smoother.paused(true)
+    }
+
+    showNav.value = true
+  } else if (globalNavRef.value) {
+    globalNavRef.value.handleClose()
+  }
 }
 
 const closeNav = () => {
   showNav.value = false
   updateHeaderColor()
+
+  if (window.smoother) {
+    window.smoother.paused(false)
+  }
 }
 
 watch(
@@ -74,16 +90,29 @@ onMounted(() => {
   window.addEventListener('scroll', updateHeaderColor)
   window.addEventListener('resize', updateHeaderColor)
   updateHeaderColor()
+
+  setTimeout(() => {
+    if (headerElement.value) {
+      ScrollTrigger.create({
+        trigger: headerElement.value,
+        start: 'top top',
+        end: 'max',
+        pin: true,
+        pinSpacing: false,
+      })
+    }
+  }, 200)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', updateHeaderColor)
   window.removeEventListener('resize', updateHeaderColor)
+  ScrollTrigger.getAll().forEach(st => st.kill())
 })
 </script>
 
 <template>
-  <header :style="{ color: computedHeaderColor }">
+  <header ref="headerElement" :style="{ color: computedHeaderColor }">
     <div @click="toggleNav">
       <span>Menu</span>
       <div class="is-toggle" :class="{ 'is-active': showNav }"></div>
@@ -96,18 +125,11 @@ onUnmounted(() => {
 <style scoped>
 header {
   display: flex;
-  position: fixed;
-  top: var(--space-small);
+  position: absolute;
   left: calc(var(--space-small) * 0.75);
-  padding: 0 var(--space-base);
+  padding: var(--space-small) var(--space-base);
   z-index: 10;
-  transition: color 0.5s cubic-bezier(0.85, 0, 0.15, 1);
-  
-  > svg {
-    width: 10em;
-    height: 8em;
-  }
-  
+
   div {
     display: flex;
     position: relative;
@@ -115,48 +137,48 @@ header {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    overflow: hidden;
     height: 100%;
-    
+    gap: 1em;
+    top: 0;
+    transition: top 0.5s cubic-bezier(0.85, 0, 0.15, 1);
+
     span {
       text-transform: uppercase;
       writing-mode: vertical-rl;
       text-orientation: mixed;
       font-size: var(--font-md);
       font-family: 'Accent';
-      overflow: hidden;
       white-space: nowrap;
       position: relative;
-      transition: margin-top 0.5s ease-in-out;
     }
-    
+
     .is-toggle {
       clip-path: var(--mask);
       background-color: currentColor;
       width: 1.5em;
-      height: 3em;
+      height: 2.5em;
       position: relative;
       bottom: 0;
-      margin-top: var(--space-small);
       opacity: 0;
-      transition: opacity 0.5s ease-in-out;
+      transition: opacity 0.5s cubic-bezier(0.85, 0, 0.15, 1);
     }
-    &:hover .is-toggle {
-      opacity: 1;
-    }
-    &:hover span {
-      margin-top: var(--space-small);
+    &:hover {
+      top: 1em;
+
+      .is-toggle {
+        opacity: 1;
+      }
     }
   }
 }
 
 @media (max-width: 768px) {
   header {
-  left: -0.275em;
-  top: 0.45em;
+  padding: 0.35em 0.55em;
+  left: -0.25em;
     & div {
     & .is-toggle {
-      height: 2.25em;
+      height: 2em;
       width: 1em;
     }
     }

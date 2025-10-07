@@ -2,21 +2,40 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import LogoMain from '@/assets/LogoMain.vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const props = defineProps({
-  home: {
-    type: Object,
-    default: () => null
-  }
+  home: { type: Object, default: () => null }
+})
+
+const heroFixed = ref(null)
+let st = null
+
+onMounted(() => {
+  setTimeout(() => {
+    if (!heroFixed.value) return
+
+    st = ScrollTrigger.create({
+      trigger: heroFixed.value,
+      start: 'top top',
+      end: 'max',
+      pin: true,
+      pinSpacing: false,
+    })
+  }, 500)
+})
+
+onUnmounted(() => {
+  if (st) st.kill()
 })
 </script>
 
 <template>
   <section v-if="home" class="hero">
     <div class="hero is-wrap">
-      <div class="hero is-content">
+      <div ref="heroFixed" class="hero is-content">
         <div class="hero is-logo">
           <LogoMain />
         </div>
@@ -27,6 +46,7 @@ const props = defineProps({
     </div>
   </section>
 </template>
+
 
 <style scoped>
 .hero {
@@ -47,9 +67,11 @@ const props = defineProps({
       object-fit: contain;
     }
   }
-  &.is-content {
-    position: relative;
+  .is-content {
+    position: absolute;
     top: 0;
+    left: 0;
+    width: 100%;
     z-index: -1;
     color: var(--is-orange);
     display: flex;
@@ -61,12 +83,13 @@ const props = defineProps({
     padding: var(--space-height) var(--space-width) var(--space-small) var(--space-width);
     box-sizing: border-box;
     clip-path: border-box;
-    > img {
-      position: fixed;
+    & img {
+      position: absolute;
       z-index: -1;
-      inset: 0;
-      height: 100vh;
+      top: 0;
+      left: 0;
       width: 100vw;
+      height: 100vh;
       object-fit: cover;
     }
     > h1 {
@@ -97,9 +120,12 @@ const props = defineProps({
     &.is-content {
       height: 80vh;
     }
-    &.is-logo svg {
-      height: auto;
-      width: 6em;
+    &.is-logo {
+      top: 0.4em;
+        svg {
+        height: auto;
+        width: 6em;
+      }
     }
   }
 }
