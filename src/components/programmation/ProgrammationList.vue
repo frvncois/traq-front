@@ -24,10 +24,10 @@ onMounted(() => {
 
     ctx = gsap.context(() => {
       ScrollTrigger.create({
-        trigger: gridElement.value,
+        trigger: sectionElement.value,
         start: "bottom bottom",
-        end: () => `+=${sectionElement.value.scrollHeight - gridElement.value.offsetHeight}`,
-        pin: true,
+        end: "max",
+        pin: gridElement.value,
         pinSpacing: false,
       })
     })
