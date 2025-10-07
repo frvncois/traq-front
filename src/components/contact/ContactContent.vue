@@ -42,7 +42,7 @@ section {
 
 .contact {
   &.is-wrap {
-    height: 100vh;
+    height: 100dvh;
     position: fixed;
     width: 100vw;
     display: flex;
@@ -60,14 +60,12 @@ section {
             flex-direction: column;
             align-items: flex-start;
             justify-content: flex-end;
-            > a {
-                border-bottom: 3px solid var(--is-fushia);
-                    &:hover {
-                        border-color: var(--is-black);
-                    }
+            & a {
+                &:hover {
+                    text-decoration: underline;
                 }
             }
-        
+        }
         > .is-cover {
             background-color: var(--is-orange);
             flex: 1;
@@ -104,9 +102,10 @@ section {
         &.is-wrap {
             padding: var(--space-small) var(--space-width);
             flex-direction: column-reverse;
+            font-size: var(--font-rg);
             > .is-content {
                 flex-direction: column;
-                        &:last-child {
+                &:last-child {
                     flex: 1;
                 }
             }
@@ -116,7 +115,7 @@ section {
                 left: auto;
                 right: var(--space-width);
                 & svg {
-                    height: 6em;
+                    height: 6.75em;
                     width: auto;
                 }
             }

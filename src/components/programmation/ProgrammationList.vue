@@ -133,7 +133,8 @@ onBeforeUnmount(() => {
 @media screen and (max-width: 768px) {
 .events {
   &.is-grid {
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: column;
     gap: var(--space-small);
     padding-bottom: var(--space-large);
     > .is-item {
