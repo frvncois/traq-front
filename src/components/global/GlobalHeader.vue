@@ -152,7 +152,8 @@ header {
 
 @media (max-width: 768px) {
   header {
-  left: -0.25em;
+  left: -0.275em;
+  top: 0.45em;
     & div {
     & .is-toggle {
       height: 2.25em;

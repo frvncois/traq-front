@@ -115,7 +115,7 @@ section {
                 left: auto;
                 right: var(--space-width);
                 & svg {
-                    height: 4.5em;
+                    height: 4.35em;
                     width: auto;
                 }
             }

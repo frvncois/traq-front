@@ -124,7 +124,7 @@ footer {
                     right: 0;
                 & svg {
                     height: auto;
-                    width: 4.5em;
+                    width: 4.35em;
                 }
             }
         }
