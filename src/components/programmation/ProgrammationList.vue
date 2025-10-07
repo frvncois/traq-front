@@ -142,6 +142,10 @@ onBeforeUnmount(() => {
           font-size: var(--font-rg);
         }
       }
+      .is-cover {
+        min-height: 20em;
+        aspect-ratio: unset;
+      }
     }
   }
 }

@@ -6,11 +6,15 @@ const props = defineProps({
   }
 })
 </script>
+
+
+
+
+
 <template>
   <section
     class="is-white"
-    v-if="home"
-  >
+    v-if="home">
     <div class="donation is-wrap">
       <div class="donation is-content">
         <h1>Faire un don</h1>
@@ -20,11 +24,12 @@ const props = defineProps({
         <span>Appuyez-nous</span>
         <div class="is-toggle"></div>
       </RouterLink>
-      <div
-        class="donation is-cover"
-        v-if="home.donationCover?.url"
-        :style="{ backgroundImage: `url(${home.donationCover.url})` }"
-      >
+      <div class="donation is-cover">
+        <img
+          v-if="home.donationCover?.url"
+          :src="home.donationCover.url"
+          alt=""
+        />
       </div>
     </div>
   </section>
@@ -84,17 +89,20 @@ const props = defineProps({
     }
     > .is-cover {
       position: relative;
-      height: 75vh;
+      height: 100vh;
       overflow: hidden;
-      background-attachment: fixed;
-      background-size: cover;
-      background-position: center;
-      width: 100vw;
-      > img {
-        position: absolute;
-        inset: 0;
+      clip-path: border-box;
+
+      img {
+        position: fixed;
+        z-index: -1;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        object-fit: cover;
       }
     }
+
   }
   &:hover .is-cta span {
     max-height: 500px;
@@ -115,7 +123,13 @@ const props = defineProps({
           width: 1em;
           height: 2em;
         }
-      }
+    }
+    > .is-cover {
+      position: relative;
+      height: 75vh;
+      overflow: hidden;
+      width: 100vw;
+    }
   }
 }
 

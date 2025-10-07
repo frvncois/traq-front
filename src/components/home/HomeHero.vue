@@ -1,5 +1,9 @@
 <script setup>
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import LogoMain from '@/assets/LogoMain.vue'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const props = defineProps({
   home: {
@@ -44,7 +48,7 @@ const props = defineProps({
     }
   }
   &.is-content {
-    position: fixed;
+    position: relative;
     top: 0;
     z-index: -1;
     color: var(--is-orange);
@@ -56,12 +60,13 @@ const props = defineProps({
     justify-content: space-between;
     padding: var(--space-height) var(--space-width) var(--space-small) var(--space-width);
     box-sizing: border-box;
+    clip-path: border-box;
     > img {
-      position: absolute;
+      position: fixed;
       z-index: -1;
       inset: 0;
       height: 100vh;
-      width: 100%;
+      width: 100vw;
       object-fit: cover;
     }
     > h1 {
