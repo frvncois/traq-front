@@ -21,6 +21,7 @@ let ctx = null
 onMounted(() => {
   setTimeout(() => {
     if (!gridElement.value || !sectionElement.value) return
+    if (window.innerWidth <= 768) return
 
     ctx = gsap.context(() => {
       ScrollTrigger.create({
