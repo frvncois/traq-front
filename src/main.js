@@ -9,12 +9,12 @@ const app = createApp(App)
 
 const lenis = new Lenis({
   autoRaf: true,
+  touchMultiplier: 2,
 });
 
 lenis.on('scroll', (e) => {
 });
 
-// Expose lenis globally for GlobalTransition to use
 window.lenis = lenis
 
 app.use(createPinia())
