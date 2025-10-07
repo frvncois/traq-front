@@ -102,9 +102,9 @@ section {
         &.is-wrap {
             padding: var(--space-small) var(--space-width);
             flex-direction: column-reverse;
-            font-size: var(--font-rg);
             > .is-content {
                 flex-direction: column;
+                font-size: var(--font-rg);
                 &:last-child {
                     flex: 1;
                 }
@@ -115,7 +115,7 @@ section {
                 left: auto;
                 right: var(--space-width);
                 & svg {
-                    height: 6.75em;
+                    height: 4.5em;
                     width: auto;
                 }
             }

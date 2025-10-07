@@ -32,7 +32,7 @@ section {
     display: flex;
     flex-direction: column;
     background: var(--is-white);
-      padding: var(--space-small) var(--space-width) var(--space-large) var(--space-width);
+    padding: var(--space-small) var(--space-width) var(--space-large) var(--space-width);
     > p {
       font-family: 'Accent';
       font-size: var(--font-rg);
