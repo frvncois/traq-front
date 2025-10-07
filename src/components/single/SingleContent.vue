@@ -56,7 +56,6 @@ onMounted(() => {
         pinSpacing: false,
       })
 
-      // Skip other pin animations on screens under 768px
       if (window.innerWidth >= 768) {
         ScrollTrigger.create({
           trigger: ticketElement.value,
@@ -262,6 +261,9 @@ onBeforeUnmount(() => {
 
       > .is-content {
         gap: var(--space-width);
+              & .is-details {
+              margin-left: 0%;
+            }
       }
     }
         &.is-cta {
@@ -279,7 +281,7 @@ onBeforeUnmount(() => {
             padding-bottom: 0;
           }
       .is-toggle {
-width: 1em;
+          width: 1em;
           height: 2em;
       }
   }

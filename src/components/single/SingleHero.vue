@@ -36,14 +36,15 @@ const props = defineProps({
     flex-direction: column;
     justify-content: flex-end;
     position: relative;
+    clip-path: border-box;
   }
   > .is-content {
     display: flex;
     > img {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      inset: 0;
+      position: fixed;
+      top:0;
+      width: 100vw;
+      height: 100vh;
       object-fit: cover;
       z-index: 0;
     }
