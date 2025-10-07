@@ -26,7 +26,7 @@ onMounted(() => {
       ScrollTrigger.create({
         trigger: gridElement.value,
         start: "bottom bottom",
-        end: "max",
+        end: () => `+=${sectionElement.value.scrollHeight - gridElement.value.offsetHeight}`,
         pin: true,
         pinSpacing: false,
       })
