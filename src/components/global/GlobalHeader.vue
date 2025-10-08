@@ -50,45 +50,64 @@ watch(
   { immediate: true }
 )
 
+let rafId = null
+
 const updateHeaderColor = () => {
-  if (route.name === 'contact') {
-    headerColor.value = 'var(--is-black)'
-    return
+  if (rafId) {
+    cancelAnimationFrame(rafId)
   }
 
-  const sections = document.querySelectorAll('section')
-  const headerRect = document.querySelector('header')?.getBoundingClientRect()
-
-  if (!headerRect) return
-
-  const headerCenter = headerRect.top + headerRect.height / 2
-
-  let currentSection = null
-
-  sections.forEach(section => {
-    const rect = section.getBoundingClientRect()
-
-    if (headerCenter >= rect.top && headerCenter <= rect.bottom) {
-      currentSection = section
+  rafId = requestAnimationFrame(() => {
+    if (route.name === 'contact') {
+      headerColor.value = 'var(--is-black)'
+      return
     }
+
+    const sections = document.querySelectorAll('section')
+    const headerRect = document.querySelector('header')?.getBoundingClientRect()
+
+    if (!headerRect) return
+
+    const headerBottom = headerRect.bottom
+
+    let currentSection = null
+    let closestDistance = Infinity
+
+    sections.forEach(section => {
+      const rect = section.getBoundingClientRect()
+
+      // Check if section is visible and overlapping with header area
+      if (rect.bottom > 0 && rect.top < headerBottom) {
+        // Calculate distance from section top to viewport top
+        const distance = Math.abs(rect.top)
+
+        // Use the section that's closest to the top of viewport
+        if (distance < closestDistance) {
+          closestDistance = distance
+          currentSection = section
+        }
+      }
+    })
+
+    if (!currentSection) return
+
+    if (currentSection.classList.contains('is-fushia')) {
+      headerColor.value = 'var(--is-black)'
+    } else if (currentSection.classList.contains('is-orange')) {
+      headerColor.value = 'var(--is-black)'
+    } else if (currentSection.classList.contains('is-white')) {
+      headerColor.value = 'var(--is-orange)'
+    } else {
+      headerColor.value = 'var(--is-orange)'
+    }
+
+    rafId = null
   })
-
-  if (!currentSection) return
-
-  if (currentSection.classList.contains('is-fushia')) {
-    headerColor.value = 'var(--is-black)'
-  } else if (currentSection.classList.contains('is-orange')) {
-    headerColor.value = 'var(--is-black)'
-  } else if (currentSection.classList.contains('is-white')) {
-    headerColor.value = 'var(--is-orange)'
-  } else {
-    headerColor.value = 'var(--is-orange)'
-  }
 }
 
 onMounted(() => {
-  window.addEventListener('scroll', updateHeaderColor)
-  window.addEventListener('resize', updateHeaderColor)
+  window.addEventListener('scroll', updateHeaderColor, { passive: true })
+  window.addEventListener('resize', updateHeaderColor, { passive: true })
   updateHeaderColor()
 
   setTimeout(() => {

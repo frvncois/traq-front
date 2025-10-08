@@ -77,7 +77,7 @@ onUnmounted(() => {
               {{ artist }}
             </li>
           </ul>
-          <h2>Conseil</h2>
+          <h2>Conseil d'administration</h2>
           <ul v-if="about.aboutConseil">
             <li v-for="(line, i) in about.aboutConseil.split('\n')" :key="i">
               {{ line }}

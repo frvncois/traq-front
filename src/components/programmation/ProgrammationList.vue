@@ -3,15 +3,23 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { RouterLink } from 'vue-router'
 import { formatDate } from '@/services/time'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const props = defineProps({
-  events: { 
+  events: {
     type: Array,
     default: () => []
   }
+})
+
+const sortedEvents = computed(() => {
+  return [...props.events].sort((a, b) => {
+    const dateA = new Date(a.eventDate)
+    const dateB = new Date(b.eventDate)
+    return dateA - dateB
+  })
 })
 
 const sectionFixed = ref(null)
@@ -43,7 +51,7 @@ onUnmounted(() => {
   <section class="is-white">
     <div ref="sectionFixed" class="events is-grid">
       <RouterLink
-        v-for="event in events"
+        v-for="event in sortedEvents"
         :key="event.documentId"
         :to="`/events/${event.documentId}`"
         class="is-item">

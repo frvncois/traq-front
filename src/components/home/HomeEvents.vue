@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { formatDate } from '@/services/time'
 import gsap from 'gsap'
@@ -9,6 +9,15 @@ gsap.registerPlugin(ScrollTrigger)
 
 const props = defineProps({
   events: { type: Object, default: () => null }
+})
+
+const sortedEvents = computed(() => {
+  if (!props.events) return []
+  return [...props.events].sort((a, b) => {
+    const dateA = new Date(a.eventDate)
+    const dateB = new Date(b.eventDate)
+    return dateA - dateB
+  })
 })
 
 const ctaFixed = ref(null)
@@ -46,7 +55,7 @@ onUnmounted(() => {
 
       <div class="events is-grid">
         <RouterLink
-          v-for="event in events.slice(0, 2)"
+          v-for="event in sortedEvents.slice(0, 2)"
           :key="event.documentId"
           :to="`/events/${event.documentId}`"
           class="is-item">
